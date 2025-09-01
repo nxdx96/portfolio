@@ -4,110 +4,152 @@ import { useState } from "react";
 import InteractiveTerminal from "./InteractiveTerminal";
 
 const ASCIICat = () => {
-  const [currentCat, setCurrentCat] = useState(0);
+  const [cats, setCats] = useState<{id: number, x: number, y: number, catIndex: number}[]>([]);
+  const [nextId, setNextId] = useState(0);
   
   const catVariations = [
     {
-      ascii: `                       /\\_/\\
-                      ( -.- )
-                       )   (
-                      (  ω  )
-                     ^^^   ^^^`,
+      ascii: `     /\\_/\\
+    ( -.- )
+     )   (
+    (  ω  )
+   ^^^   ^^^`,
       name: "Sleepy Cat",
       status: "💤 Taking a nap..."
     },
     {
-      ascii: `                       /\\_/\\
-                      ( ^.^ )
-                       )   (
-                      (  v  )
-                     ^^^   ^^^`,
+      ascii: `     /\\_/\\
+    ( ^.^ )
+     )   (
+    (  v  )
+   ^^^   ^^^`,
       name: "Happy Cat",
       status: "😸 Feeling great!"
     },
     {
-      ascii: `                       /\\_/\\
-                      ( o.o )
-                       )   (
-                      (  ∩  )
-                     ^^^   ^^^`,
+      ascii: `     /\\_/\\
+    ( o.o )
+     )   (
+    (  ∩  )
+   ^^^   ^^^`,
       name: "Curious Cat",
       status: "🤔 Wondering about code..."
     },
     {
-      ascii: `                       /\\_/\\
-                      ( ≧∇≦)
-                       )   (
-                      (  ω  )
-                     ^^^   ^^^`,
+      ascii: `     /\\_/\\
+    ( ≧∇≦)
+     )   (
+    (  ω  )
+   ^^^   ^^^`,
       name: "Excited Cat",
-      status: "🎉 Just deployed to prod!"
+      status: "🎉 Just deployed!"
     },
     {
-      ascii: `                       /\\_/\\
-                      ( =.= )
-                       )   (
-                      (  ︶  )
-                     ^^^   ^^^`,
+      ascii: `     /\\_/\\
+    ( =.= )
+     )   (
+    (  ︶  )
+   ^^^   ^^^`,
       name: "Content Cat",
       status: "😌 All tests passing..."
     },
     {
-      ascii: `                       /\\_/\\
-                      ( ◕ ◕ )
-                       )   (
-                      (  ○  )
-                     ^^^   ^^^`,
+      ascii: `     /\\_/\\
+    ( ◕ ◕ )
+     )   (
+    (  ○  )
+   ^^^   ^^^`,
       name: "Alert Cat",
       status: "👀 Watching for bugs!"
     },
     {
-      ascii: `                       /\\_/\\
-                      ( ◔̯◔ )
-                       )   (
-                      (  ~  )
-                     ^^^   ^^^`,
+      ascii: `     /\\_/\\
+    ( ◔̯◔ )
+     )   (
+    (  ~  )
+   ^^^   ^^^`,
       name: "Skeptical Cat",
-      status: "🤨 This code looks sus..."
+      status: "🤨 Code looks sus..."
     },
     {
-      ascii: `                       /\\_/\\
-                      ( -.-)
-                       )   (
-                      (  ᵕ  )
-                     ^^^   ^^^`,
+      ascii: `     /\\_/\\
+    ( -.-)
+     )   (
+    (  ᵕ  )
+   ^^^   ^^^`,
       name: "Zen Cat",
-      status: "🧘 Meditating on algorithms..."
+      status: "🧘 Meditating..."
     }
   ];
 
-  const handleCatClick = () => {
-    setCurrentCat((prev) => (prev + 1) % catVariations.length);
+  const handleAreaClick = () => {
+    const randomCatIndex = Math.floor(Math.random() * catVariations.length);
+    
+    const newCat = {
+      id: nextId,
+      x: 20 + Math.random() * 60, // Random position
+      y: 20 + Math.random() * 60,
+      catIndex: randomCatIndex
+    };
+    
+    setCats(prev => [...prev, newCat]);
+    setNextId(prev => prev + 1);
   };
 
-  const currentVariation = catVariations[currentCat];
+  const clearCats = () => {
+    setCats([]);
+  };
 
   return (
-    <div className="flex items-center justify-center h-full">
+    <div className="relative w-full h-full min-h-[600px]">
+      {/* Clickable area - expanded */}
       <div 
-        onClick={handleCatClick}
-        className="cursor-pointer hover:scale-105 transition-transform duration-300 select-none"
-        title="Click me for different cats!"
-      >
-        <pre className="text-primary font-mono text-sm leading-tight bg-transparent border-none">
-{currentVariation.ascii}
-        </pre>
-        
-        <div className="mt-4 text-center">
-          <div className="inline-block border rounded-lg p-3 bg-card/50 backdrop-blur-sm">
-            <div className="text-sm font-semibold text-foreground">{currentVariation.name}</div>
-            <div className="text-xs text-muted-foreground mt-1">{currentVariation.status}</div>
-            <div className="text-xs text-muted-foreground mt-2">
-              Click me! ({currentCat + 1}/{catVariations.length})
-            </div>
+        onClick={handleAreaClick}
+        className="absolute inset-0 cursor-crosshair bg-transparent z-0"
+        title="Click anywhere to add cats!"
+      />
+      
+      {/* Instructions */}
+      <div className="absolute top-4 left-4 right-4 text-center z-10 pointer-events-none">
+        <div className="inline-block bg-card/90 backdrop-blur-sm rounded-lg p-3 border pointer-events-auto">
+          <div className="text-sm font-semibold text-foreground">Cat Playground</div>
+          <div className="text-xs text-muted-foreground mt-1">
+            Click anywhere to spawn cats! ({cats.length} cats)
           </div>
+          {cats.length > 0 && (
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                clearCats();
+              }}
+              className="text-xs text-red-500 hover:text-red-400 mt-2 underline"
+            >
+              Clear all cats
+            </button>
+          )}
         </div>
       </div>
+
+      {/* Render cats */}
+      {cats.map(cat => (
+        <div
+          key={cat.id}
+          className="absolute z-20 animate-bounce"
+          style={{
+            left: `${cat.x}%`,
+            top: `${cat.y}%`,
+            transform: 'translate(-50%, -50%)',
+            animationDuration: `${1 + Math.random() * 2}s`
+          }}
+        >
+          <pre 
+            className="text-primary font-mono text-xs leading-tight bg-transparent border-none select-none hover:scale-110 transition-transform cursor-pointer"
+            title={catVariations[cat.catIndex].name}
+          >
+            {catVariations[cat.catIndex].ascii}
+          </pre>
+        </div>
+      ))}
     </div>
   );
 };
@@ -118,7 +160,7 @@ const Hero = () => {
       <div className="max-w-6xl mx-auto w-full">
         {/* Desktop: Two column layout, Mobile: Stacked */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[600px]">
-          {/* ASCII Cat - Left on desktop, top on mobile */}
+          {/* ASCII Cat Playground - Left on desktop, top on mobile */}
           <div className="order-1 lg:order-1 flex items-center justify-center">
             <ASCIICat />
           </div>
