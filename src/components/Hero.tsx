@@ -8,9 +8,9 @@ const Hero = () => {
         <div className="bg-card border border-border rounded-lg p-8 font-mono">
           {/* Terminal Header */}
           <div className="flex items-center gap-2 mb-6 pb-4 border-b border-border">
-            <div className="w-3 h-3 rounded-full bg-tokyo-red"></div>
-            <div className="w-3 h-3 rounded-full bg-tokyo-yellow"></div>
-            <div className="w-3 h-3 rounded-full bg-tokyo-green"></div>
+            <div className="w-3 h-3 rounded-full bg-dracula-red"></div>
+            <div className="w-3 h-3 rounded-full bg-dracula-yellow"></div>
+            <div className="w-3 h-3 rounded-full bg-dracula-green"></div>
             <div className="ml-4 text-sm text-muted-foreground">
               user@arch: ~
             </div>

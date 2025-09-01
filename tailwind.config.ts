@@ -66,15 +66,14 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				tokyo: {
-					cyan: 'hsl(var(--tokyo-cyan))',
-					green: 'hsl(var(--tokyo-green))',
-					orange: 'hsl(var(--tokyo-orange))',
-					pink: 'hsl(var(--tokyo-pink))',
-					purple: 'hsl(var(--tokyo-purple))',
-					red: 'hsl(var(--tokyo-red))',
-					yellow: 'hsl(var(--tokyo-yellow))',
-					blue: 'hsl(var(--tokyo-blue))'
+				dracula: {
+					cyan: 'hsl(var(--dracula-cyan))',
+					green: 'hsl(var(--dracula-green))',
+					orange: 'hsl(var(--dracula-orange))',
+					pink: 'hsl(var(--dracula-pink))',
+					purple: 'hsl(var(--dracula-purple))',
+					red: 'hsl(var(--dracula-red))',
+					yellow: 'hsl(var(--dracula-yellow))'
 				}
 			},
 			borderRadius: {

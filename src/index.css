@@ -7,60 +7,110 @@ All colors MUST be HSL.
 */
 
 @layer base {
-  :root,
+  :root {
+    /* Dracula Light Mode - Light background with dark text */
+    --background: 60 30% 96%; /* #f8f8f2 - Dracula foreground as light background */
+    --foreground: 231 15% 18%; /* #282a36 - Dracula background as dark text */
+
+    --card: 0 0% 100%; /* #ffffff - Pure white for cards */
+    --card-foreground: 231 15% 18%; /* #282a36 - Dark text on light cards */
+
+    --popover: 0 0% 100%; /* #ffffff - White popover */
+    --popover-foreground: 231 15% 18%; /* #282a36 - Dark text */
+
+    /* Darker Dracula Purple for light mode contrast */
+    --primary: 250 100% 60%; /* #8764d8 - Darker purple for light mode */
+    --primary-foreground: 0 0% 100%; /* #ffffff - White text on dark primary */
+
+    /* Light gray for secondary */
+    --secondary: 225 9% 85%; /* #d6d8dc - Light gray */
+    --secondary-foreground: 231 15% 18%; /* #282a36 - Dark text */
+
+    --muted: 225 9% 95%; /* #f1f1f3 - Very light gray for muted areas */
+    --muted-foreground: 225 9% 59%; /* #6272a4 - Dracula comment for muted text */
+
+    /* Darker Dracula Pink for light mode */
+    --accent: 326 100% 50%; /* #e619a3 - Darker pink for contrast */
+    --accent-foreground: 0 0% 100%; /* #ffffff - White text on dark accent */
+
+    --destructive: 0 100% 50%; /* #dc2626 - Darker red for light mode */
+    --destructive-foreground: 0 0% 100%; /* #ffffff - White text on red */
+
+    --border: 225 9% 85%; /* #d6d8dc - Light border */
+    --input: 225 9% 95%; /* #f1f1f3 - Light input background */
+    --ring: 250 100% 60%; /* #8764d8 - Darker purple for focus rings */
+
+    --radius: 0.375rem;
+
+    /* Dracula colors adapted for light mode */
+    --dracula-cyan: 191 97% 40%; /* #1ba3c7 - Darker cyan */
+    --dracula-green: 135 94% 35%; /* #2a8a3f - Darker green */
+    --dracula-orange: 31 100% 50%; /* #cc6600 - Darker orange */
+    --dracula-pink: 326 100% 50%; /* #e619a3 - Darker pink */
+    --dracula-purple: 250 100% 60%; /* #8764d8 - Darker purple */
+    --dracula-red: 0 100% 50%; /* #cc0000 - Darker red */
+    --dracula-yellow: 65 92% 40%; /* #996600 - Darker yellow */
+
+    --sidebar-background: 60 30% 96%;
+    --sidebar-foreground: 231 15% 18%;
+    --sidebar-primary: 250 100% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 326 100% 50%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 225 9% 85%;
+    --sidebar-ring: 250 100% 60%;
+  }
+
   .dark {
-    /* Tokyo Night Theme - Enhanced contrast backgrounds */
-    --background: 220 15% 12%; /* #1a1b26 - Tokyo Night background */
-    --foreground: 225 27% 86%; /* #c0caf5 - Tokyo Night foreground */
+    /* Dracula Dark Mode - Original dark theme */
+    --background: 231 15% 18%; /* #282a36 - Dracula background */
+    --foreground: 60 30% 96%; /* #f8f8f2 - Dracula foreground */
 
-    --card: 216 20% 18%; /* #24283b - Tokyo Night darker background for cards */
-    --card-foreground: 225 27% 86%; /* #c0caf5 - Bright text on cards */
+    --card: 232 14% 31%; /* #44475a - Dracula current line for cards */
+    --card-foreground: 60 30% 96%; /* #f8f8f2 - Bright text on cards */
 
-    --popover: 220 15% 12%; /* #1a1b26 - Tokyo Night background */
-    --popover-foreground: 225 27% 86%; /* #c0caf5 - Tokyo Night foreground */
+    --popover: 231 15% 18%; /* #282a36 - Dracula background */
+    --popover-foreground: 60 30% 96%; /* #f8f8f2 - Dracula foreground */
 
-    /* Tokyo Night Blue for primary */
-    --primary: 187 100% 75%; /* #7dcfff - Tokyo Night cyan blue */
-    --primary-foreground: 220 15% 12%; /* #1a1b26 - dark background on bright primary */
+    /* Dracula Purple for primary */
+    --primary: 250 100% 80%; /* #bd93f9 - Dracula purple */
+    --primary-foreground: 231 15% 18%; /* #282a36 - dark background on bright primary */
 
-    /* Tokyo Night Surface */
-    --secondary: 220 14% 35%; /* #444b6a - Tokyo Night comment */
-    --secondary-foreground: 225 27% 86%; /* #c0caf5 - bright text */
+    /* Dracula Current Line */
+    --secondary: 232 14% 31%; /* #44475a - Dracula current line */
+    --secondary-foreground: 60 30% 96%; /* #f8f8f2 - bright text */
 
-    --muted: 216 20% 18%; /* #24283b - Tokyo Night darker surface */
-    --muted-foreground: 220 12% 56%; /* #7682aa - Tokyo Night muted text */
+    --muted: 231 15% 18%; /* #282a36 - Dracula background for muted */
+    --muted-foreground: 225 9% 59%; /* #6272a4 - Dracula comment */
 
-    /* Tokyo Night Magenta for accents */
-    --accent: 267 85% 79%; /* #bb9af7 - Tokyo Night purple */
-    --accent-foreground: 220 15% 12%; /* #1a1b26 - dark text on bright accent */
+    /* Dracula Pink for accents */
+    --accent: 326 100% 74%; /* #ff79c6 - Dracula pink */
+    --accent-foreground: 231 15% 18%; /* #282a36 - dark text on bright accent */
 
-    --destructive: 0 73% 72%; /* #f7768e - Tokyo Night red */
-    --destructive-foreground: 220 15% 12%; /* #1a1b26 - dark text on red */
+    --destructive: 0 100% 67%; /* #ff5555 - Dracula red */
+    --destructive-foreground: 60 30% 96%; /* #f8f8f2 - bright text on red */
 
-    --border: 220 14% 35%; /* #444b6a - Tokyo Night comment color for borders */
-    --input: 216 20% 18%; /* #24283b - Tokyo Night darker surface for inputs */
-    --ring: 187 100% 75%; /* #7dcfff - Tokyo Night cyan for focus rings */
+    --border: 232 14% 31%; /* #44475a - Dracula current line for borders */
+    --input: 232 14% 31%; /* #44475a - Dracula current line for inputs */
+    --ring: 250 100% 80%; /* #bd93f9 - Dracula purple for focus rings */
 
-    --radius: 0.375rem; /* Slightly more rounded like JetBrains */
+    /* Dracula color palette - original bright colors */
+    --dracula-cyan: 191 97% 77%; /* #8be9fd - Dracula cyan */
+    --dracula-green: 135 94% 65%; /* #50fa7b - Dracula green */
+    --dracula-orange: 31 100% 71%; /* #ffb86c - Dracula orange */
+    --dracula-pink: 326 100% 74%; /* #ff79c6 - Dracula pink */
+    --dracula-purple: 250 100% 80%; /* #bd93f9 - Dracula purple */
+    --dracula-red: 0 100% 67%; /* #ff5555 - Dracula red */
+    --dracula-yellow: 65 92% 76%; /* #f1fa8c - Dracula yellow */
 
-    /* Tokyo Night color palette */
-    --tokyo-cyan: 187 100% 75%; /* #7dcfff - Tokyo Night cyan */
-    --tokyo-green: 95 38% 62%; /* #9ece6a - Tokyo Night green */
-    --tokyo-orange: 28 100% 70%; /* #ff9e64 - Tokyo Night orange */
-    --tokyo-pink: 343 73% 72%; /* #f7768e - Tokyo Night red/pink */
-    --tokyo-purple: 267 85% 79%; /* #bb9af7 - Tokyo Night purple */
-    --tokyo-red: 343 73% 72%; /* #f7768e - Tokyo Night red */
-    --tokyo-yellow: 41 61% 64%; /* #e0af68 - Tokyo Night yellow */
-    --tokyo-blue: 218 93% 73%; /* #7aa2f7 - Tokyo Night blue */
-
-    --sidebar-background: 220 15% 12%; /* Match main background */
-    --sidebar-foreground: 225 27% 86%; /* Match main foreground */
-    --sidebar-primary: 187 100% 75%; /* Tokyo Night cyan */
-    --sidebar-primary-foreground: 220 15% 12%; /* Dark text on bright primary */
-    --sidebar-accent: 267 85% 79%; /* Tokyo Night purple */
-    --sidebar-accent-foreground: 220 15% 12%; /* Dark text on bright accent */
-    --sidebar-border: 220 14% 35%; /* Tokyo Night comment */
-    --sidebar-ring: 187 100% 75%; /* Tokyo Night cyan */
+    --sidebar-background: 231 15% 18%; /* Match main background */
+    --sidebar-foreground: 60 30% 96%; /* Match main foreground */
+    --sidebar-primary: 250 100% 80%; /* Dracula purple */
+    --sidebar-primary-foreground: 231 15% 18%; /* Dark text on bright primary */
+    --sidebar-accent: 326 100% 74%; /* Dracula pink */
+    --sidebar-accent-foreground: 231 15% 18%; /* Dark text on bright accent */
+    --sidebar-border: 232 14% 31%; /* Dracula current line */
+    --sidebar-ring: 250 100% 80%; /* Dracula purple */
   }
 }
 
@@ -75,14 +125,22 @@ All colors MUST be HSL.
     letter-spacing: 0.025em; /* Slight letter spacing for readability */
   }
 
-  /* Force dark mode globally */
+  /* System theme support */
   html {
-    color-scheme: dark;
+    color-scheme: light dark; /* Support both light and dark system themes */
   }
   
-  html.dark,
-  html[data-theme="dark"] {
-    /* Additional dark mode enforcement */
+  /* System preference detection fallback */
+  @media (prefers-color-scheme: dark) {
+    html:not(.light) {
+      color-scheme: dark;
+    }
+  }
+  
+  @media (prefers-color-scheme: light) {
+    html:not(.dark) {
+      color-scheme: light;
+    }
   }
 
   /* Professional typography */
@@ -122,10 +180,10 @@ All colors MUST be HSL.
     animation: slideIn 0.5s ease-out;
   }
 
-  /* Tokyo Night code highlighting */
+  /* Dracula code highlighting */
   code {
     @apply bg-muted px-1 py-0.5 rounded text-sm font-mono;
-    color: hsl(var(--tokyo-cyan));
+    color: hsl(var(--dracula-cyan));
   }
 
   pre {
@@ -133,9 +191,9 @@ All colors MUST be HSL.
     border: 1px solid hsl(var(--border));
   }
 
-  /* Tokyo Night selection */
+  /* Dracula selection */
   ::selection {
-    background-color: hsl(var(--tokyo-purple) / 0.3);
+    background-color: hsl(var(--dracula-purple) / 0.3);
     color: hsl(var(--foreground));
   }
 
