@@ -1,7 +1,16 @@
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "@/components/ThemeToggle";
+import { useNavigate } from "react-router-dom";
 
 const Navigation = () => {
+  const navigate = useNavigate();
+
+  const handleHomeClick = () => {
+    navigate('/');
+    // Scroll to top immediately after navigation
+    setTimeout(() => window.scrollTo(0, 0), 0);
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-sm border-b border-border">
       <div className="max-w-6xl mx-auto px-6 py-4">
@@ -11,7 +20,12 @@ const Navigation = () => {
           </div>
           
           <div className="flex items-center gap-6">
-            <Button variant="ghost" size="sm" className="text-sm font-mono text-muted-foreground hover:text-primary">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-sm font-mono text-muted-foreground hover:text-primary"
+              onClick={handleHomeClick}
+            >
               ./home
             </Button>
             <Button variant="ghost" size="sm" className="text-sm font-mono text-muted-foreground hover:text-primary">

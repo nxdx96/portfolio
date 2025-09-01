@@ -128,6 +128,7 @@ All colors MUST be HSL.
   /* System theme support */
   html {
     color-scheme: light dark; /* Support both light and dark system themes */
+    scroll-behavior: smooth; /* Global smooth scrolling */
   }
   
   /* System preference detection fallback */
@@ -356,5 +357,51 @@ All colors MUST be HSL.
     animation: terminal-typing 2s steps(40, end), terminal-blink 1s infinite step-end;
     overflow: hidden;
     white-space: nowrap;
+  }
+
+  /* Floating scroll animations */
+  @keyframes floatIn {
+    0% {
+      opacity: 0;
+      transform: translateY(60px) scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes floatInLeft {
+    0% {
+      opacity: 0;
+      transform: translateX(-40px) translateY(30px) scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0) translateY(0) scale(1);
+    }
+  }
+
+  @keyframes floatInRight {
+    0% {
+      opacity: 0;
+      transform: translateX(40px) translateY(30px) scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0) translateY(0) scale(1);
+    }
+  }
+
+  /* Simple smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Disable smooth scrolling for users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, html {
+      scroll-behavior: auto !important;
+    }
   }
 }

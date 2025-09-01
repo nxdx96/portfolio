@@ -17,19 +17,26 @@ interface RepositoryCardProps {
 }
 
 const RepositoryCard = ({ repository }: RepositoryCardProps) => {
+  const handleClick = () => {
+    window.open(`https://github.com/nxdx96/${repository.name}`, '_blank', 'noopener,noreferrer');
+  };
+
   return (
-    <Card className="p-8 hover:bg-muted/30 transition-all duration-300 border border-border bg-card group cursor-pointer min-h-[280px] flex flex-col">
+    <Card 
+      className="p-8 hover:bg-muted/30 transition-all duration-300 border border-border bg-card group cursor-pointer h-full flex flex-col hover:shadow-lg hover:shadow-primary/10"
+      onClick={handleClick}
+    >
       <div className="flex-1 space-y-4">
         <div className="flex items-start justify-between">
           <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors leading-tight">
             {repository.name}
           </h3>
-          <Badge variant="secondary" className="text-xs font-medium">
+          <Badge variant="secondary" className="text-xs font-medium shrink-0">
             Public
           </Badge>
         </div>
         
-        <p className="text-base text-muted-foreground leading-relaxed flex-1">
+        <p className="text-base text-muted-foreground leading-relaxed">
           {repository.description}
         </p>
       </div>
