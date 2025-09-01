@@ -91,8 +91,8 @@ const ASCIICat = () => {
     
     const newCat = {
       id: nextId,
-      x: Math.max(5, Math.min(95, x)), // Use actual click position, keep within bounds
-      y: Math.max(5, Math.min(95, y)),
+      x: Math.max(0, Math.min(95, x)), // Use actual click position, keep within bounds
+      y: Math.max(0, Math.min(95, y)),
       catIndex: randomCatIndex
     };
     
@@ -144,7 +144,7 @@ const ASCIICat = () => {
       {cats.map(cat => (
         <div
           key={cat.id}
-          className="absolute z-20 animate-bounce"
+          className="absolute z-20 animate-bounce pointer-events-none"
           style={{
             left: `${cat.x}%`,
             top: `${cat.y}%`,
@@ -153,7 +153,7 @@ const ASCIICat = () => {
           }}
         >
           <pre 
-            className="text-primary font-mono text-xs leading-tight bg-transparent border-none select-none hover:scale-110 transition-transform cursor-pointer"
+            className="text-primary font-mono text-xs leading-tight bg-transparent border-none select-none hover:scale-110 transition-transform"
             title={catVariations[cat.catIndex].name}
           >
             {catVariations[cat.catIndex].ascii}
