@@ -82,13 +82,17 @@ const ASCIICat = () => {
     }
   ];
 
-  const handleAreaClick = () => {
+  const handleAreaClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+    
     const randomCatIndex = Math.floor(Math.random() * catVariations.length);
     
     const newCat = {
       id: nextId,
-      x: 20 + Math.random() * 60, // Random position
-      y: 20 + Math.random() * 60,
+      x: Math.max(5, Math.min(95, x)), // Use actual click position, keep within bounds
+      y: Math.max(5, Math.min(95, y)),
       catIndex: randomCatIndex
     };
     
@@ -110,7 +114,7 @@ const ASCIICat = () => {
       />
       
       {/* Instructions */}
-      <div className="absolute top-4 left-4 right-4 text-center z-10 pointer-events-none">
+      <div className="absolute top-0 left-4 right-4 text-center z-10 pointer-events-none">
         <div className="inline-block bg-transparent rounded-lg p-3 pointer-events-auto">
           <div className="text-primary pixelated-text">
             cat playground
@@ -118,19 +122,23 @@ const ASCIICat = () => {
           <div className="text-xs text-muted-foreground/80 mt-1">
             Click anywhere to spawn cats! ({cats.length} cats)
           </div>
-          {cats.length > 0 && (
-            <button 
-              onClick={(e) => {
-                e.stopPropagation();
-                clearCats();
-              }}
-              className="text-xs text-red-500 hover:text-red-400 mt-2 underline"
-            >
-              Clear all cats
-            </button>
-          )}
         </div>
       </div>
+
+      {/* Clear button - positioned separately */}
+      {cats.length > 0 && (
+        <div className="absolute bottom-4 left-4 z-30 pointer-events-none">
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              clearCats();
+            }}
+            className="text-xs text-red-500 hover:text-red-400 underline pointer-events-auto bg-transparent px-2 py-1"
+          >
+            Clear all cats
+          </button>
+        </div>
+      )}
 
       {/* Render cats */}
       {cats.map(cat => (
