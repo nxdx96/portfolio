@@ -7,7 +7,7 @@ const Navigation = () => {
       <div className="max-w-6xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="text-sm font-mono font-medium">
-            [user@arch ~]$
+            [user@nada ~]$
           </div>
           
           <div className="flex items-center gap-6">

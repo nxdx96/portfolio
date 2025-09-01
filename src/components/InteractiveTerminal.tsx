@@ -9,7 +9,7 @@ interface TerminalLine {
 
 const InteractiveTerminal = () => {
   const [lines, setLines] = useState<TerminalLine[]>([
-    { id: "1", type: "output", content: "Software Engineer Portfolio Terminal v1.0.0" },
+    { id: "1", type: "output", content: "Nada's Software Engineer Portfolio Terminal v1.0.0" },
     { id: "2", type: "output", content: "Type 'help' to see available commands." },
     { id: "3", type: "output", content: "" },
     { id: "4", type: "prompt", content: "[user@portfolio ~]$ " },
@@ -46,19 +46,31 @@ const InteractiveTerminal = () => {
       "  clear         - Clear terminal",
     ],
     about: () => [
-      "Software Engineer with 5+ years of experience",
-      "Specializing in distributed systems and scalable architecture",
-      "Passionate about building reliable, high-performance applications",
+      "Experienced Software Engineer with 5+ years specializing in designing",
+      "and scaling high-performance data infrastructure and distributed systems,",
+      "with a proven track record of architecting enterprise-grade platforms",
     ],
     skills: () => [
+      "Big Data & Infrastructure:",
+      "  • Airflow DAGs, Snowflake, PostgreSQL, MongoDB",
+      "  • High-volume Data Processing, Data Pipeline Optimization",
+      "  • Vector Search & Indexing",
+
       "Programming Languages:",
-      "  • JavaScript/TypeScript, Python, Go, Java",
-      "  • React, Node.js, Express, FastAPI",
-      "",
-      "Infrastructure & Tools:",
-      "  • Docker, Kubernetes, AWS, GCP",
-      "  • PostgreSQL, Redis, MongoDB",
-      "  • Git, CI/CD, Microservices",
+      "  • Python, Java, JavaScript, C#, .NET",
+      "  • Flask, Node.js, RESTful API Development",
+    
+      "Cloud & DevOps:",
+      "  • AWS (CloudFormation, ECS, S3, Step Functions, Lambda, SNS/SQS)",
+      "  • Docker, CI/CD Pipelines",
+
+      "Data Science & Analytics:",
+      "  • Pandas, Matplotlib, Sci-Kit Learn",
+      "  • ML Pipeline Development, RAG patterns, LLM Integration",
+ 
+      "Tools & Platforms:",
+      "  • Git, GitHub Actions, Tableau, Jupyter Notebook",
+      "  • JIRA, Postman, XML Processing",
     ],
     projects: () => [
       "Featured Projects:",
