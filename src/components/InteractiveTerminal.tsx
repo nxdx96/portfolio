@@ -19,6 +19,8 @@ const InteractiveTerminal = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
+  const [catVariation, setCatVariation] = useState(0);
+  const [petVariation, setPetVariation] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
 
@@ -35,6 +37,62 @@ const InteractiveTerminal = () => {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
   }, [lines]);
+
+  const catVariations = [
+    [
+      "     /\\_/\\  ",
+      "    ( o.o ) ",
+      "     > ^ <  ",
+      "    ♥ meow ♥",
+      "      type 'pet' to interact"
+    ],
+    [
+      "     /\\_/\\  ",
+      "    ( -.- ) ",
+      "     > - <  ",
+      "     zzz... ",
+      "      (sleeping kitty)"
+    ],
+    [
+      "     /\\_/\\  ",
+      "    ( >.< ) ",
+      "     > w <  ",
+      "     nyaa~ ",
+      "      (excited cat!)"
+    ]
+  ];
+
+  const petVariations = [
+    [
+      "     /\\_/\\  ",
+      "    ( ^.^ ) ",
+      "     )   (  ",
+      "    (  -  ) ",
+      "   ^^^   ^^^",
+      "    purr... purr...",
+      "   you pet the cat. it seems happy!\n\n",
+      "   pet it again?"
+    ],
+    [
+      "     /\\_/\\  ",
+      "    ( ◕.◕ ) ",
+      "     )   (  ",
+      "    (  ∪  ) ",
+      "   ^^^   ^^^",
+      "    mrow mrow~",
+      "   the cat nuzzles your hand affectionately!"
+    ],
+    [
+      "     /\\_/\\  ",
+      "    ( =.= ) ",
+      "     )   (  ",
+      "    (  ︶  ) ",
+      "   ^^^   ^^^",
+      "    *content purring*",
+      "   maximum happiness achieved! =^.^=\n\n",
+      "   now try 'cat about.txt' or 'cat readme.md'"
+    ]
+  ];
 
   const commands = {
     help: () => [
@@ -115,23 +173,16 @@ const InteractiveTerminal = () => {
       "    via responsive web interfaces and real-time data processing",
     ],
     clear: () => [],
-    cat: () => [
-      "     /\\_/\\  ",
-      "    ( o.o ) ",
-      "     > ^ <  ",
-      "    ♥ meow ♥",
-      "      type 'pet' to interact"
-    ],
-    pet : () => [
-      "     /\\_/\\  ",
-      "    ( ^.^ ) ",
-      "     )   (  ",
-      "    (  -  ) ",
-      "   ^^^   ^^^",
-      "    purr... purr...",
-      "   you pet the cat. it seems happy!\n\n",
-      "   okay, try 'cat about.txt' or 'cat readme.md'"
-    ]
+    cat: () => {
+      const variation = catVariations[catVariation];
+      setCatVariation((prev) => (prev + 1) % catVariations.length);
+      return variation;
+    },
+    pet: () => {
+      const variation = petVariations[petVariation];
+      setPetVariation((prev) => (prev + 1) % petVariations.length);
+      return variation;
+    }
   };
 
   const typeText = async (text: string, delay = 15) => {
