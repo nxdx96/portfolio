@@ -59,18 +59,25 @@ const WorkSection = () => {
   ];
 
   return (
-    <section className="py-20 px-6">
-      <div className="max-w-4xl mx-auto">
+    <section className="py-32 px-6">
+      <div className="max-w-6xl mx-auto">
         <div className="animate-slide-in">
-          <h2 className="text-3xl font-semibold tracking-tight mb-3">
-            Featured Work
-          </h2>
-          <p className="text-muted-foreground mb-12">
-            A selection of projects showcasing expertise in distributed systems, 
-            infrastructure, and scalable architecture.
-          </p>
+          <div className="mb-16">
+            <div className="text-sm font-medium text-muted-foreground mb-4 tracking-wider uppercase">
+              / Featured Projects
+            </div>
+            <h2 className="text-5xl font-bold tracking-tight mb-6">
+              Level up your workflow
+              <br />
+              with these repositories
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed">
+              A selection of projects showcasing expertise in distributed systems, 
+              infrastructure, and scalable architecture.
+            </p>
+          </div>
           
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-8 md:grid-cols-2">
             {repositories.map((repo, index) => (
               <div 
                 key={repo.name} 
