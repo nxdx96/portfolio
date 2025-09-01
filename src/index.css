@@ -284,6 +284,12 @@ All colors MUST be HSL.
     min-height: unset;
     min-width: unset;
   }
+  
+  /* Exception for terminal control buttons */
+  .terminal-control-btn {
+    min-height: unset;
+    min-width: unset;
+  }
 
   /* High contrast mode support */
   @media (prefers-contrast: high) {

@@ -1,15 +1,26 @@
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "@/components/ThemeToggle";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import TerminalModal from "./TerminalModal";
 
 const Navigation = () => {
   const navigate = useNavigate();
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
 
   const handleHomeClick = () => {
     navigate('/');
     // Scroll to top immediately after navigation
     setTimeout(() => window.scrollTo(0, 0), 0);
   };
+
+  const aboutContent = `I’m Nada Ibrahim, a software engineer passionate about building robust, scalable systems and streamlining complex workflows. I specialize in full-stack development, cloud infrastructure, automation, and AI-driven solutions. My experience spans AWS, Snowflake, Flask, Python, and advanced data tools, creating systems that handle hundreds of jobs and hundreds of thousands of documents every week.
+
+I’ve worked on AI projects that leverage natural language processing and machine learning to solve real-world problems, from fuzzy matching and data reconciliation to building intelligent automation pipelines. I thrive in environments where I can take ownership of both architecture and execution—optimizing Step Function workflows, integrating AI into operations, or designing systems that turn complexity into efficiency.
+
+Driven by curiosity and problem-solving, I’m always exploring ways to combine software, data, and AI to make large-scale operations smarter and more reliable.
+
+When I'm not coding, you'll find me building keyboards, PCs, and playing video games.`;
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-sm border-b border-border">
@@ -28,7 +39,12 @@ const Navigation = () => {
             >
               ./home
             </Button>
-            <Button variant="ghost" size="sm" className="text-sm font-mono text-muted-foreground hover:text-primary">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-sm font-mono text-muted-foreground hover:text-primary"
+              onClick={() => setIsAboutModalOpen(true)}
+            >
               ./about
             </Button>
             <Button variant="ghost" size="sm" className="text-sm font-mono text-muted-foreground hover:text-primary">
@@ -41,6 +57,13 @@ const Navigation = () => {
           </div>
         </div>
       </div>
+      
+      <TerminalModal
+        isOpen={isAboutModalOpen}
+        onClose={() => setIsAboutModalOpen(false)}
+        title="about"
+        content={aboutContent}
+      />
     </nav>
   );
 };
