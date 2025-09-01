@@ -318,4 +318,43 @@ All colors MUST be HSL.
   .text-muted-foreground {
     color: hsl(var(--muted-foreground)) !important;
   }
+
+  /* Terminal-specific scrollbar styles */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+  
+  .scrollbar-thumb-border {
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+  
+  .scrollbar-track-transparent {
+    scrollbar-track-color: transparent;
+  }
+
+  /* Terminal cursor animation */
+  @keyframes terminal-blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  .terminal-cursor {
+    animation: terminal-blink 1s infinite;
+  }
+
+  /* Terminal typing effect */
+  @keyframes terminal-typing {
+    from { 
+      width: 0; 
+    }
+    to { 
+      width: 100%; 
+    }
+  }
+
+  .terminal-typing {
+    animation: terminal-typing 2s steps(40, end), terminal-blink 1s infinite step-end;
+    overflow: hidden;
+    white-space: nowrap;
+  }
 }
