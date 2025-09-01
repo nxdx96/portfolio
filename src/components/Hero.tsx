@@ -11,9 +11,11 @@ const Hero = () => {
 
         {/* Action Buttons */}
         <div className="flex gap-4 mt-8 justify-center">
-          <Button size="lg" className="group">
-            <Github className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform" />
-            View GitHub
+          <Button size="lg" className="group" asChild>
+            <a href="https://github.com/nxdx96" target="_blank" rel="noopener noreferrer">
+              <Github className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform" />
+              View GitHub
+            </a>
           </Button>
           <Button variant="outline" size="lg" className="group">
             <ExternalLink className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform" />
