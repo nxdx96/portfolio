@@ -10,7 +10,7 @@ interface TerminalLine {
 const InteractiveTerminal = () => {
   const [lines, setLines] = useState<TerminalLine[]>([
     { id: "1", type: "output", content: "Nada's Software Engineer Portfolio Terminal v1.0.0" },
-    { id: "2", type: "output", content: "Type 'help' to see available commands." },
+    { id: "2", type: "output", content: "Type 'help' to see available commands. " },
     { id: "3", type: "output", content: "" },
     { id: "4", type: "prompt", content: "[user@portfolio ~]$ " },
   ]);
@@ -45,7 +45,7 @@ const InteractiveTerminal = () => {
       "  projects      - View projects",
       "  contact       - Contact information",
       "  clear         - Clear terminal",
-      "  cat           - try me!!!"
+      "  cat           - try me!!! ",
     ],
     about: () => [
       "Experienced Software Engineer with 5+ years specializing in designing",
@@ -128,7 +128,9 @@ const InteractiveTerminal = () => {
       "     )   (  ",
       "    (  -  ) ",
       "   ^^^   ^^^",
-      "    purr... purr..."
+      "    purr... purr...",
+      "   you pet the cat. it seems happy!\n\n",
+      "   okay, try 'cat about.txt' or 'cat readme.md'"
     ]
   };
 
