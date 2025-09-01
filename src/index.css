@@ -346,7 +346,7 @@ All colors MUST be HSL.
   }
 
   .terminal-cursor {
-    animation: terminal-blink 1s infinite;
+    animation: terminal-blink 0.7s infinite;
   }
 
   /* Terminal typing effect */

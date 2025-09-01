@@ -11,6 +11,12 @@ interface TerminalModalProps {
 const TerminalModal = ({ isOpen, onClose, title, content }: TerminalModalProps) => {
   const [isMinimized, setIsMinimized] = useState(false);
   const [showMinimizeTab, setShowMinimizeTab] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [isMaximized, setIsMaximized] = useState(false);
+  const [isResizing, setIsResizing] = useState(false);
+  const [size, setSize] = useState({ width: 896, height: 504 }); // Default max-w-4xl equivalent and 70vh at 720px height
 
   const handleMinimize = () => {
     setIsMinimized(true);
@@ -22,6 +28,83 @@ const TerminalModal = ({ isOpen, onClose, title, content }: TerminalModalProps) 
     setShowMinimizeTab(false);
     setIsMinimized(false);
   };
+
+  const handleMaximize = () => {
+    setIsMaximized(!isMaximized);
+    // Reset position when toggling maximize
+    if (!isMaximized) {
+      setPosition({ x: 0, y: 0 });
+    }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (isMinimized) return;
+    setIsDragging(true);
+    const rect = (e.target as HTMLElement).closest('.terminal-modal')?.getBoundingClientRect();
+    if (rect) {
+      setDragOffset({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      });
+    }
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (isDragging && !isMinimized) {
+      setPosition({
+        x: e.clientX - dragOffset.x,
+        y: e.clientY - dragOffset.y
+      });
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+    }
+  }, [isDragging, dragOffset]);
+
+  const handleResizeMouseDown = (e: React.MouseEvent) => {
+    if (isMinimized) return;
+    setIsResizing(true);
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleResizeMouseMove = (e: MouseEvent) => {
+    if (isResizing && !isMinimized) {
+      const rect = document.querySelector('.terminal-modal')?.getBoundingClientRect();
+      if (rect) {
+        const newWidth = Math.max(400, e.clientX - rect.left);
+        const newHeight = Math.max(300, e.clientY - rect.top);
+        setSize({ width: newWidth, height: newHeight });
+      }
+    }
+  };
+
+  const handleResizeMouseUp = () => {
+    setIsResizing(false);
+  };
+
+  useEffect(() => {
+    if (isResizing) {
+      document.addEventListener('mousemove', handleResizeMouseMove);
+      document.addEventListener('mouseup', handleResizeMouseUp);
+      return () => {
+        document.removeEventListener('mousemove', handleResizeMouseMove);
+        document.removeEventListener('mouseup', handleResizeMouseUp);
+      };
+    }
+  }, [isResizing]);
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -43,19 +126,30 @@ const TerminalModal = ({ isOpen, onClose, title, content }: TerminalModalProps) 
   if (!isOpen) return null;
 
   return (
-    <div className={`fixed inset-0 flex items-center justify-center p-4 ${isMinimized ? 'z-30 pointer-events-none' : 'z-50'}`}>
+    <div className={`fixed inset-0 ${isMaximized ? '' : 'flex items-center justify-center p-4'} ${isMinimized ? 'z-30 pointer-events-none' : 'z-50'}`}>
       {/* Backdrop */}
-      {!isMinimized && (
+      {!isMinimized && !isMaximized && (
         <div 
-          className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-          onClick={onClose}
+          className="absolute inset-0 bg-black/60 backdrop-blur-sm cursor-pointer"
+          onClick={() => {
+            if (!isDragging) {
+              handleMinimize();
+            }
+          }}
         />
       )}
       
       {/* Terminal Modal */}
-      <div className={`relative w-full max-w-4xl max-h-[70vh] bg-card border-2 border-primary/30 rounded-lg shadow-2xl overflow-hidden my-auto transition-all duration-300 ${isMinimized ? 'scale-0 opacity-0 translate-y-96 translate-x-96' : 'scale-100 opacity-100 translate-x-0 translate-y-0'}`}>
+      <div 
+        className={`terminal-modal relative my-auto bg-card border-2 border-primary/30 rounded-lg shadow-2xl overflow-hidden flex flex-col ${isMinimized ? 'transition-all duration-300 scale-0 opacity-0 translate-y-96 translate-x-96' : isDragging || isResizing ? '' : 'transition-all duration-300 scale-100 opacity-100 translate-x-0 translate-y-0'} ${isDragging ? 'cursor-grabbing' : 'cursor-default'}`}
+        style={{
+          transform: !isMinimized ? `translate(${position.x}px, ${position.y}px)` : undefined,
+          width: `${size.width}px`,
+          height: `${size.height}px`
+        }}
+      >
         {/* Terminal Header */}
-        <div className="flex items-center justify-between p-3 bg-muted/50 border-b border-border">
+        <div className="flex items-center justify-between p-3 bg-muted/50 border-b border-border select-none">
           <div className="flex items-center gap-2">
             <button
               onClick={onClose}
@@ -69,17 +163,20 @@ const TerminalModal = ({ isOpen, onClose, title, content }: TerminalModalProps) 
             />
             <button
               className="terminal-control-btn w-3 h-3 rounded-full bg-green-500 hover:bg-green-400 transition-colors cursor-default"
-              title="Maximize"
+              title="Maximize (disabled)"
             />
           </div>
-          <div className="text-sm font-mono text-muted-foreground">
+          <div 
+            className="text-sm font-mono text-muted-foreground cursor-grab active:cursor-grabbing"
+            onMouseDown={handleMouseDown}
+          >
             [user@nada ~]$ cat {title}.txt
           </div>
           <div></div>
         </div>
         
         {/* Terminal Content */}
-        <div className="p-6 bg-background/95 font-mono text-sm leading-relaxed overflow-y-auto max-h-[calc(70vh-120px)]">
+        <div className="p-6 bg-background/95 font-mono text-sm leading-relaxed overflow-y-auto flex-1">
           <div className="text-primary mb-2">
             $ cat {title}.txt
           </div>
@@ -89,6 +186,15 @@ const TerminalModal = ({ isOpen, onClose, title, content }: TerminalModalProps) 
           <div className="text-primary mt-4">
             $ <span className="animate-pulse">_</span>
           </div>
+        </div>
+        
+        {/* Resize Handle */}
+        <div 
+          className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize bg-transparent"
+          onMouseDown={handleResizeMouseDown}
+          title="Resize window"
+        >
+          <div className="absolute bottom-1 right-1 w-2 h-2 border-r-2 border-b-2 border-muted-foreground/50"></div>
         </div>
       </div>
       
