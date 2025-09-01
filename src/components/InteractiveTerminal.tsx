@@ -41,9 +41,11 @@ const InteractiveTerminal = () => {
       "  help          - Show this help message",
       "  about         - About the developer",
       "  skills        - Technical skills",
+      "  experience    - Work experience",
       "  projects      - View projects",
       "  contact       - Contact information",
       "  clear         - Clear terminal",
+      "  cat           - try me!!!"
     ],
     about: () => [
       "Experienced Software Engineer with 5+ years specializing in designing",
@@ -76,15 +78,11 @@ const InteractiveTerminal = () => {
       "Featured Projects:",
       "  1. Face Findr - Interactive beauty discovery app mapping makeup products to facial features",
       
-
       "  2. Policy Scraper Dashboard - Automated policy data scraping with searchable Flask dashboard",
-      
    
       "  3. Prompt2JSON Extractor - LLM-powered structured data extractor with JSON validation",
 
-
       "  4. Snowflake Fuzzy Matcher Lite - Healthcare provider matching using fuzzy algorithms",
-      
 
       "  5. Bootcamp Wrapped - Music analytics project emulating Spotify Wrapped",
      
@@ -97,25 +95,33 @@ const InteractiveTerminal = () => {
     ],
     experience: () => [
       "Professional Experience:",
-      "",
-      "Senior Software Engineer (2021-Present)",
-      "  • Led development of distributed systems serving 1M+ users",
-      "  • Improved system performance by 40% through optimization",
-      "",
-      "Software Engineer (2019-2021)", 
+      "Software Engineer III - Komodo Health (2022-2025)",
+      "  • Architected AWS-based data infrastructure processing 350K+ documents quarterly with 99.5% uptime,",
+      "    cutting deployment times by 50% and eliminating $5M+ in annual third-party costs",
+      "  • Built AI-powered data mapping platform handling 12M+ provider records in Snowflake with vector search,",
+      "    optimizing Airflow pipelines to reduce job failures by 70% and boost processing speeds by 40%",
+      "  • Developed scalable Flask APIs and JavaScript dashboards serving thousands of daily requests,",
+      "    reducing manual intervention by 60% and achieving $2M+ quarterly operational savings",
+      "Software Engineer - Infosys/Comcast (2019-2021)", 
       "  • Built microservices architecture from monolithic system",
       "  • Reduced deployment time by 60% with CI/CD pipelines",
     ],
-    whoami: () => ["developer"],
-    pwd: () => ["/home/developer/portfolio"],
-    ls: () => [
-      "total 8",
-      "drwxr-xr-x  2 developer developer 4096 Dec  1 10:30 projects/",
-      "drwxr-xr-x  2 developer developer 4096 Dec  1 10:30 documents/",
-      "-rw-r--r--  1 developer developer 1024 Dec  1 10:30 README.md",
-      "-rw-r--r--  1 developer developer  512 Dec  1 10:30 about.txt",
-    ],
     clear: () => [],
+    cat: () => [
+      "     /\\_/\\  ",
+      "    ( o.o ) ",
+      "     > ^ <  ",
+      "    ♥ meow ♥",
+      "      type 'pet' to interact"
+    ],
+    pet : () => [
+      "     /\\_/\\  ",
+      "    ( ^.^ ) ",
+      "     )   (  ",
+      "    (  -  ) ",
+      "   ^^^   ^^^",
+      "    purr... purr..."
+    ]
   };
 
   const typeText = async (text: string, delay = 15) => {
@@ -296,22 +302,39 @@ const InteractiveTerminal = () => {
     }
   };
 
-  const handleTerminalClick = () => {
-    if (inputRef.current) {
-      inputRef.current.focus();
+  const handleTerminalClick = (e: React.MouseEvent) => {
+    // Only focus if we're not selecting text and clicked on empty space
+    const selection = window.getSelection();
+    const target = e.target as HTMLElement;
+    
+    // Don't focus if there's a text selection or if clicking on a link
+    if ((!selection || selection.toString().length === 0) && 
+        !target.closest('a') && 
+        inputRef.current) {
+      // Small delay to allow text selection to complete
+      setTimeout(() => {
+        const currentSelection = window.getSelection();
+        if (!currentSelection || currentSelection.toString().length === 0) {
+          inputRef.current?.focus();
+        }
+      }, 10);
     }
   };
 
-  // Helper function to render text with clickable URLs
+  // Helper function to render text with clickable URLs and emails
   const renderTextWithLinks = (text: string) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
-    const parts = text.split(urlRegex);
+    const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
     
-    return parts.map((part, index) => {
+    // First handle URLs, then emails
+    let result = text.split(urlRegex);
+    let finalParts: (string | JSX.Element)[] = [];
+    
+    result.forEach((part, index) => {
       if (part.match(urlRegex)) {
-        return (
+        finalParts.push(
           <a
-            key={index}
+            key={`url-${index}`}
             href={part}
             target="_blank"
             rel="noopener noreferrer"
@@ -321,15 +344,35 @@ const InteractiveTerminal = () => {
             {part}
           </a>
         );
+      } else {
+        // Check for emails in non-URL parts
+        const emailParts = part.split(emailRegex);
+        emailParts.forEach((emailPart, emailIndex) => {
+          if (emailPart.match(emailRegex)) {
+            finalParts.push(
+              <a
+                key={`email-${index}-${emailIndex}`}
+                href={`mailto:${emailPart}`}
+                className="text-dracula-cyan underline hover:text-dracula-pink transition-colors cursor-pointer"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {emailPart}
+              </a>
+            );
+          } else if (emailPart) {
+            finalParts.push(emailPart);
+          }
+        });
       }
-      return part;
     });
+    
+    return finalParts;
   };
 
   return (
     <div 
       className="bg-card border border-border rounded-lg p-6 font-mono text-sm cursor-text min-h-[500px] max-h-[600px] overflow-hidden flex flex-col"
-      onClick={handleTerminalClick}
+      onMouseUp={handleTerminalClick}
     >
       {/* Terminal Header */}
       <div className="flex items-center gap-2 mb-4 pb-3 border-b border-border">
@@ -344,18 +387,18 @@ const InteractiveTerminal = () => {
       {/* Terminal Content */}
       <div 
         ref={terminalRef}
-        className="flex-1 overflow-y-auto space-y-1 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent"
+        className="flex-1 overflow-y-auto space-y-1 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent select-text"
       >
         {lines.map((line) => (
-          <div key={line.id} className="whitespace-pre-wrap">
+          <div key={line.id} className="whitespace-pre-wrap select-text">
             {line.type === "command" && (
-              <span className="text-primary">{renderTextWithLinks(line.content)}</span>
+              <span className="text-primary select-text">{renderTextWithLinks(line.content)}</span>
             )}
             {line.type === "output" && (
-              <span className="text-foreground">{renderTextWithLinks(line.content)}</span>
+              <span className="text-foreground select-text">{renderTextWithLinks(line.content)}</span>
             )}
             {line.type === "prompt" && (
-              <span className="text-primary">{renderTextWithLinks(line.content)}</span>
+              <span className="text-primary select-text">{renderTextWithLinks(line.content)}</span>
             )}
           </div>
         ))}
