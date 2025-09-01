@@ -75,26 +75,25 @@ const InteractiveTerminal = () => {
     projects: () => [
       "Featured Projects:",
       "  1. Face Findr - Interactive beauty discovery app mapping makeup products to facial features",
-      "     Technologies: Flask, Postgres, p5.js, d3.js, Plotly\n\n",
+      
 
       "  2. Policy Scraper Dashboard - Automated policy data scraping with searchable Flask dashboard",
-      "     Technologies: Python, Selenium, Flask, Docker, CI/CD\n\n",
+      
    
       "  3. Prompt2JSON Extractor - LLM-powered structured data extractor with JSON validation",
-      "     Technologies: LLM integration, JSON schema validation\n\n",
+
 
       "  4. Snowflake Fuzzy Matcher Lite - Healthcare provider matching using fuzzy algorithms",
-      "     Technologies: RapidFuzz, SQLite, Data Engineering\n\n",
+      
 
       "  5. Bootcamp Wrapped - Music analytics project emulating Spotify Wrapped",
-      "     Technologies: Jupyter Notebook, Multi-platform data analysis",
+     
     ],
     contact: () => [
       "Contact Information:",
-      "  📧 Email: developer@example.com",
-      "  💼 LinkedIn: /in/developer",
-      "  🐙 GitHub: /developer",
-      "  🌐 Portfolio: https://developer.dev",
+      "  📧 Email: nadaibrhm96@gmail.com",
+      "  💼 LinkedIn: https://www.linkedin.com/in/nadaibrahim96/",
+      "  🐙 GitHub: https://github.com/nxdx96"
     ],
     experience: () => [
       "Professional Experience:",
@@ -342,18 +341,29 @@ const InteractiveTerminal = () => {
       {!isTyping && (
         <div className="flex items-center mt-2 pt-2 border-t border-border/50">
           <span className="text-primary mr-2">[user@portfolio ~]$</span>
-          <span className="text-primary animate-pulse mr-1">█</span>
-          <input
-            ref={inputRef}
-            type="text"
-            value={currentInput}
-            onChange={(e) => setCurrentInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            className="flex-1 bg-transparent outline-none border-none text-foreground caret-transparent focus:outline-none focus:ring-0 focus:border-none"
-            placeholder="Type a command..."
-            disabled={isTyping}
-            style={{ boxShadow: 'none' }}
-          />
+          <div className="flex items-center flex-1">
+            {currentInput === "" ? (
+              <>
+                <span className="text-primary animate-pulse">█</span>
+                <span className="text-muted-foreground ml-1">Type a command...</span>
+              </>
+            ) : (
+              <>
+                <span className="text-foreground">{currentInput}</span>
+                <span className="text-primary animate-pulse">█</span>
+              </>
+            )}
+            <input
+              ref={inputRef}
+              type="text"
+              value={currentInput}
+              onChange={(e) => setCurrentInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className="absolute opacity-0 w-0 h-0 overflow-hidden"
+              placeholder="Type a command..."
+              disabled={isTyping}
+            />
+          </div>
         </div>
       )}
     </div>
