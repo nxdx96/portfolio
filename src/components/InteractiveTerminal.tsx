@@ -74,10 +74,20 @@ const InteractiveTerminal = () => {
     ],
     projects: () => [
       "Featured Projects:",
-      "  1. Distributed Cache System - High-performance caching layer",
-      "  2. Microservices Orchestrator - Container management platform", 
-      "  3. Real-time Analytics Engine - Stream processing pipeline",
-      "  4. Infrastructure as Code - Automated deployment framework",
+      "  1. Face Findr - Interactive beauty discovery app mapping makeup products to facial features",
+      "     Technologies: Flask, Postgres, p5.js, d3.js, Plotly\n\n",
+
+      "  2. Policy Scraper Dashboard - Automated policy data scraping with searchable Flask dashboard",
+      "     Technologies: Python, Selenium, Flask, Docker, CI/CD\n\n",
+   
+      "  3. Prompt2JSON Extractor - LLM-powered structured data extractor with JSON validation",
+      "     Technologies: LLM integration, JSON schema validation\n\n",
+
+      "  4. Snowflake Fuzzy Matcher Lite - Healthcare provider matching using fuzzy algorithms",
+      "     Technologies: RapidFuzz, SQLite, Data Engineering\n\n",
+
+      "  5. Bootcamp Wrapped - Music analytics project emulating Spotify Wrapped",
+      "     Technologies: Jupyter Notebook, Multi-platform data analysis",
     ],
     contact: () => [
       "Contact Information:",
@@ -203,7 +213,7 @@ const InteractiveTerminal = () => {
       
       if (fileContents[fileName]) {
         for (const line of fileContents[fileName]) {
-          await typeText(line, 10);
+          await typeText(line, 5);
         }
       } else {
         await typeText(`cat: ${fileName}: No such file or directory`);
@@ -223,7 +233,7 @@ const InteractiveTerminal = () => {
     // Handle echo command
     if (trimmedCmd.startsWith("echo ")) {
       const text = cmd.slice(5); // Remove "echo "
-      await typeText(text, 10);
+      await typeText(text, 5);
       
       // Add empty line for spacing like real terminal
       await typeText("");
@@ -243,11 +253,11 @@ const InteractiveTerminal = () => {
       
       // Add header for help command
       if (trimmedCmd === "help") {
-        await typeText("Available commands:");
+        await typeText("Available commands:", 5);
       }
       
       for (const line of output) {
-        await typeText(line, line === "" ? 0 : 10);
+        await typeText(line, line === "" ? 0 : 5);
       }
     } else {
       await typeText(`bash: ${trimmedCmd}: command not found`);
@@ -332,18 +342,18 @@ const InteractiveTerminal = () => {
       {!isTyping && (
         <div className="flex items-center mt-2 pt-2 border-t border-border/50">
           <span className="text-primary mr-2">[user@portfolio ~]$</span>
+          <span className="text-primary animate-pulse mr-1">█</span>
           <input
             ref={inputRef}
             type="text"
             value={currentInput}
             onChange={(e) => setCurrentInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="flex-1 bg-transparent outline-none border-none text-foreground caret-primary focus:outline-none focus:ring-0 focus:border-none"
+            className="flex-1 bg-transparent outline-none border-none text-foreground caret-transparent focus:outline-none focus:ring-0 focus:border-none"
             placeholder="Type a command..."
             disabled={isTyping}
             style={{ boxShadow: 'none' }}
           />
-          <span className="text-primary animate-pulse ml-1">█</span>
         </div>
       )}
     </div>
