@@ -93,7 +93,7 @@ const InteractiveTerminal = () => {
       "Contact Information:",
       "  📧 Email: nadaibrhm96@gmail.com",
       "  💼 LinkedIn: https://www.linkedin.com/in/nadaibrahim96/",
-      "  🐙 GitHub: https://github.com/nxdx96"
+      "  🐙 GitHub: https://www.github.com/nxdx96"
     ],
     experience: () => [
       "Professional Experience:",
@@ -302,6 +302,30 @@ const InteractiveTerminal = () => {
     }
   };
 
+  // Helper function to render text with clickable URLs
+  const renderTextWithLinks = (text: string) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const parts = text.split(urlRegex);
+    
+    return parts.map((part, index) => {
+      if (part.match(urlRegex)) {
+        return (
+          <a
+            key={index}
+            href={part}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-dracula-cyan underline hover:text-dracula-pink transition-colors cursor-pointer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {part}
+          </a>
+        );
+      }
+      return part;
+    });
+  };
+
   return (
     <div 
       className="bg-card border border-border rounded-lg p-6 font-mono text-sm cursor-text min-h-[500px] max-h-[600px] overflow-hidden flex flex-col"
@@ -325,13 +349,13 @@ const InteractiveTerminal = () => {
         {lines.map((line) => (
           <div key={line.id} className="whitespace-pre-wrap">
             {line.type === "command" && (
-              <span className="text-primary">{line.content}</span>
+              <span className="text-primary">{renderTextWithLinks(line.content)}</span>
             )}
             {line.type === "output" && (
-              <span className="text-foreground">{line.content}</span>
+              <span className="text-foreground">{renderTextWithLinks(line.content)}</span>
             )}
             {line.type === "prompt" && (
-              <span className="text-primary">{line.content}</span>
+              <span className="text-primary">{renderTextWithLinks(line.content)}</span>
             )}
           </div>
         ))}
