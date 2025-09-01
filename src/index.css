@@ -404,4 +404,20 @@ All colors MUST be HSL.
       scroll-behavior: auto !important;
     }
   }
+
+  /* Pixelated font using Pixelify Sans */
+  .pixelated-text {
+    font-family: 'Pixelify Sans', 'Courier New', monospace;
+    font-weight: 600;
+    font-size: 32px;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    text-rendering: geometricPrecision;
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: unset;
+    font-smooth: never;
+    letter-spacing: 1px;
+  }
 }

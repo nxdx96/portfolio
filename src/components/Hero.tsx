@@ -111,9 +111,11 @@ const ASCIICat = () => {
       
       {/* Instructions */}
       <div className="absolute top-4 left-4 right-4 text-center z-10 pointer-events-none">
-        <div className="inline-block bg-card/90 backdrop-blur-sm rounded-lg p-3 border pointer-events-auto">
-          <div className="text-sm font-semibold text-foreground">Cat Playground</div>
-          <div className="text-xs text-muted-foreground mt-1">
+        <div className="inline-block bg-transparent rounded-lg p-3 pointer-events-auto">
+          <div className="text-primary pixelated-text">
+            cat playground
+          </div>
+          <div className="text-xs text-muted-foreground/80 mt-1">
             Click anywhere to spawn cats! ({cats.length} cats)
           </div>
           {cats.length > 0 && (
