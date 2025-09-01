@@ -156,17 +156,17 @@ const ASCIICat = () => {
 
 const Hero = () => {
   return (
-    <section className="pt-24 pb-8 px-6 min-h-screen flex items-center">
+    <section className="pt-24 pb-8 px-4 min-h-screen flex items-center">
       <div className="max-w-6xl mx-auto w-full">
         {/* Desktop: Two column layout, Mobile: Stacked */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[600px]">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center min-h-[600px]">
           {/* ASCII Cat Playground - Left on desktop, top on mobile */}
-          <div className="order-1 lg:order-1 flex items-center justify-center">
+          <div className="order-1 lg:order-1 lg:col-span-2 flex items-center justify-center">
             <ASCIICat />
           </div>
           
           {/* Terminal - Right on desktop, bottom on mobile */}
-          <div className="order-2 lg:order-2 flex flex-col">
+          <div className="order-2 lg:order-2 lg:col-span-3 flex flex-col">
             <InteractiveTerminal />
             
             {/* Action Buttons */}
