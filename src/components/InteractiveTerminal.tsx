@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
+import { Mail, Linkedin, Github, Phone } from "lucide-react";
 
 interface TerminalLine {
   id: string;
   type: "command" | "output" | "prompt";
-  content: string;
+  content: string | JSX.Element;
   timestamp?: number;
 }
 
@@ -147,9 +148,30 @@ const InteractiveTerminal = () => {
     ],
     contact: () => [
       "Contact Information:",
-      "  📧 Email: nadaibrhm96@gmail.com",
-      "  💼 LinkedIn: https://www.linkedin.com/in/nadaibrahim96/",
-      "  🐙 GitHub: https://www.github.com/nxdx96"
+      <div className="flex items-center gap-3 ml-2">
+        <Mail size={16} className="text-primary flex-shrink-0" />
+        <a href="mailto:nadaibrhm96@gmail.com" className="hover:text-primary hover:underline">
+          nadaibrhm96@gmail.com
+        </a>
+      </div>,
+      <div className="flex items-center gap-3 ml-2">
+        <Linkedin size={16} className="text-primary flex-shrink-0" />
+        <a href="https://linkedin.com/in/nadaibrahim96" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline">
+          linkedin.com/in/nadaibrahim96
+        </a>
+      </div>,
+      <div className="flex items-center gap-3 ml-2">
+        <Github size={16} className="text-primary flex-shrink-0" />
+        <a href="https://github.com/nxdx96" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline">
+          github.com/nxdx96
+        </a>
+      </div>,
+      <div className="flex items-center gap-3 ml-2">
+        <Phone size={16} className="text-primary flex-shrink-0" />
+        <a href="tel:2016268719" className="hover:text-primary hover:underline">
+          201-626-8719
+        </a>
+      </div>
     ],
     experience: () => [
       "Professional Experience:",
@@ -329,7 +351,18 @@ const InteractiveTerminal = () => {
       }
       
       for (const line of output) {
-        await typeText(line, line === "" ? 0 : 5);
+        if (typeof line === 'string') {
+          await typeText(line, line === "" ? 0 : 5);
+        } else {
+          // Handle JSX elements directly without typing animation
+          const lineId = Date.now().toString() + Math.random();
+          setLines(prev => [
+            ...prev,
+            { id: lineId, type: "output", content: line }
+          ]);
+          // Small delay to maintain terminal feel
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
       }
     } else {
       await typeText(`bash: ${trimmedCmd}: command not found`);
@@ -389,7 +422,12 @@ const InteractiveTerminal = () => {
   };
 
   // Helper function to render text with clickable URLs and emails
-  const renderTextWithLinks = (text: string) => {
+  const renderTextWithLinks = (content: string | JSX.Element) => {
+    if (typeof content !== 'string') {
+      return content; // Return JSX element as-is
+    }
+    
+    const text = content;
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
     
