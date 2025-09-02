@@ -7,6 +7,9 @@ import TerminalModal from "./TerminalModal";
 const Navigation = () => {
   const navigate = useNavigate();
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
+  const [isClickMeModalOpen, setIsClickMeModalOpen] = useState(false);
+  const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   const handleHomeClick = () => {
     navigate('/');
@@ -22,6 +25,7 @@ Driven by curiosity and problem-solving, I’m always exploring ways to combine 
 
 When I'm not coding, you'll find me building keyboards, PCs, and playing video games.`;
 
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-sm border-b border-border">
       <div className="max-w-6xl mx-auto px-6 py-4">
@@ -34,7 +38,7 @@ When I'm not coding, you'll find me building keyboards, PCs, and playing video g
             <Button 
               variant="ghost" 
               size="sm" 
-              className="text-sm font-mono text-muted-foreground hover:text-primary"
+              className="text-xs font-mono text-muted-foreground hover:text-primary hover:bg-primary/10"
               onClick={handleHomeClick}
             >
               ./home
@@ -42,16 +46,34 @@ When I'm not coding, you'll find me building keyboards, PCs, and playing video g
             <Button 
               variant="ghost" 
               size="sm" 
-              className="text-sm font-mono text-muted-foreground hover:text-primary"
+              className="text-xs font-mono text-muted-foreground hover:text-primary hover:bg-primary/10"
               onClick={() => setIsAboutModalOpen(true)}
             >
               ./about
             </Button>
-            <Button variant="ghost" size="sm" className="text-sm font-mono text-muted-foreground hover:text-primary">
-              ./work
-            </Button>
-            <Button variant="ghost" size="sm" className="text-sm font-mono text-muted-foreground hover:text-primary">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-xs font-mono text-muted-foreground hover:text-primary hover:bg-primary/10"
+              onClick={() => setIsResumeModalOpen(true)}
+            >
               ./resume
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-xs font-mono text-muted-foreground hover:text-primary hover:bg-primary/10"
+              onClick={() => setIsContactModalOpen(true)}
+            >
+              ./contact
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-xs font-mono text-muted-foreground hover:text-primary hover:bg-primary/10"
+              onClick={() => setIsClickMeModalOpen(true)}
+            >
+              ./click-me
             </Button>
             <ThemeToggle />
           </div>
@@ -63,6 +85,33 @@ When I'm not coding, you'll find me building keyboards, PCs, and playing video g
         onClose={() => setIsAboutModalOpen(false)}
         title="about"
         content={aboutContent}
+      />
+      
+      <TerminalModal
+        isOpen={isClickMeModalOpen}
+        onClose={() => setIsClickMeModalOpen(false)}
+        title="cats"
+        content=""
+        isGifModal={true}
+        gifSrc="/family.gif"
+        fixedGifRatio={true}
+      />
+      
+      <TerminalModal
+        isOpen={isResumeModalOpen}
+        onClose={() => setIsResumeModalOpen(false)}
+        title="resume"
+        content=""
+        isPdfModal={true}
+        pdfSrc="/Nada_Ibrahim_Resume.pdf"
+      />
+      
+      <TerminalModal
+        isOpen={isContactModalOpen}
+        onClose={() => setIsContactModalOpen(false)}
+        title="contact"
+        content=""
+        isContactModal={true}
       />
     </nav>
   );
