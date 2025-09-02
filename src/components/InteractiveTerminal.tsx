@@ -476,26 +476,26 @@ const InteractiveTerminal = () => {
 
   return (
     <div 
-      className="bg-card border border-border rounded-lg p-6 font-mono text-sm cursor-text min-h-[500px] max-h-[600px] overflow-hidden flex flex-col"
+      className="bg-card border border-border rounded-lg p-3 sm:p-4 md:p-6 font-mono text-xs sm:text-sm cursor-text min-h-[350px] sm:min-h-[450px] md:min-h-[500px] max-h-[500px] sm:max-h-[550px] md:max-h-[600px] overflow-hidden flex flex-col"
       onMouseUp={handleTerminalClick}
     >
       {/* Terminal Header */}
-      <div className="flex items-center gap-2 mb-4 pb-3 border-b border-border">
-        <div className="w-3 h-3 rounded-full bg-dracula-red"></div>
-        <div className="w-3 h-3 rounded-full bg-dracula-yellow"></div>
-        <div className="w-3 h-3 rounded-full bg-dracula-green"></div>
-        <div className="ml-4 text-sm text-muted-foreground">
-          user@portfolio: ~/terminal
+      <div className="flex items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4 pb-2 sm:pb-3 border-b border-border">
+        <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 rounded-full bg-dracula-red"></div>
+        <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 rounded-full bg-dracula-yellow"></div>
+        <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 rounded-full bg-dracula-green"></div>
+        <div className="ml-2 sm:ml-3 md:ml-4 text-xs sm:text-sm text-muted-foreground">
+          <span className="hidden xs:inline">user@portfolio: ~/</span><span className="xs:hidden">~/</span>terminal
         </div>
       </div>
 
       {/* Terminal Content */}
       <div 
         ref={terminalRef}
-        className="flex-1 overflow-y-auto space-y-1 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent select-text"
+        className="flex-1 overflow-y-auto space-y-0.5 sm:space-y-1 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent select-text"
       >
         {lines.map((line) => (
-          <div key={line.id} className="whitespace-pre-wrap select-text">
+          <div key={line.id} className="whitespace-pre-wrap select-text text-xs sm:text-sm leading-relaxed">
             {line.type === "command" && (
               <span className="text-primary select-text">{renderTextWithLinks(line.content)}</span>
             )}
@@ -512,16 +512,22 @@ const InteractiveTerminal = () => {
       {/* Input Line */}
       {!isTyping && (
         <div className="flex items-center mt-2 pt-2 border-t border-border/50">
-          <span className="text-primary mr-2">[user@portfolio ~]$</span>
-          <div className="flex items-center flex-1">
+          <span className="text-primary mr-1 sm:mr-2 text-xs sm:text-sm">
+            <span className="hidden xs:inline">[user@portfolio ~]$</span>
+            <span className="xs:hidden">$</span>
+          </span>
+          <div className="flex items-center flex-1 min-w-0">
             {currentInput === "" ? (
               <>
                 <span className="text-primary animate-pulse">█</span>
-                <span className="text-muted-foreground ml-1">Type a command...</span>
+                <span className="text-muted-foreground ml-1 text-xs sm:text-sm truncate">
+                  <span className="hidden sm:inline">Type a command...</span>
+                  <span className="sm:hidden">Type cmd...</span>
+                </span>
               </>
             ) : (
               <>
-                <span className="text-foreground">{currentInput}</span>
+                <span className="text-foreground text-xs sm:text-sm break-all">{currentInput}</span>
                 <span className="text-primary animate-pulse">█</span>
               </>
             )}

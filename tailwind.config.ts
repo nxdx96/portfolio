@@ -17,6 +17,14 @@ export default {
 				'2xl': '1400px'
 			}
 		},
+		screens: {
+			'xs': '475px',
+			'sm': '640px',
+			'md': '768px',
+			'lg': '1024px',
+			'xl': '1280px',
+			'2xl': '1536px'
+		},
 		extend: {
 			fontFamily: {
 				'mono': ['JetBrains Mono', 'monospace'],
@@ -107,5 +115,25 @@ export default {
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate"),
+		function({ addUtilities }) {
+			addUtilities({
+				'.scrollbar-hide': {
+					'-ms-overflow-style': 'none',
+					'scrollbar-width': 'none',
+					'&::-webkit-scrollbar': {
+						display: 'none'
+					}
+				},
+				'.scrollbar-default': {
+					'-ms-overflow-style': 'auto',
+					'scrollbar-width': 'auto',
+					'&::-webkit-scrollbar': {
+						display: 'block'
+					}
+				}
+			})
+		}
+	],
 } satisfies Config;

@@ -30,15 +30,26 @@ const TerminalModal = ({ isOpen, onClose, title, content, isGifModal, gifSrc, fi
   const [docxLoadFailed, setDocxLoadFailed] = useState(false);
   const [pngLoadFailed, setPngLoadFailed] = useState(false);
   const [size, setSize] = useState(() => {
+    // Get viewport dimensions for responsive sizing
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    
     if (fixedGifRatio && isGifModal) {
-      // Set modal size to accommodate GIF + command + text
-      return { width: 600, height: 500 };
+      // Responsive GIF modal sizing
+      const width = Math.min(600, vw - 32); // 16px margin on each side
+      const height = Math.min(500, vh - 64); // 32px margin top/bottom
+      return { width, height };
     }
     if (isPdfModal || isDocxModal || isPngModal) {
-      // Set modal size optimized for document viewing
-      return { width: 900, height: 700 };
+      // Responsive document modal sizing
+      const width = Math.min(900, vw - 32);
+      const height = Math.min(700, vh - 64);
+      return { width, height };
     }
-    return { width: 896, height: 504 }; // Default max-w-4xl equivalent and 70vh at 720px height
+    // Default responsive sizing
+    const width = Math.min(896, vw - 32);
+    const height = Math.min(504, vh - 64);
+    return { width, height };
   });
 
   // Generate unique tab ID based on title
@@ -164,6 +175,43 @@ const TerminalModal = ({ isOpen, onClose, title, content, isGifModal, gifSrc, fi
     tabIdRef.current = tabId;
   }, [removeTab, tabId]);
 
+  // Handle window resize to keep modal responsive
+  useEffect(() => {
+    const handleResize = () => {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      
+      setSize(prevSize => {
+        let newWidth, newHeight;
+        
+        if (fixedGifRatio && isGifModal) {
+          newWidth = Math.min(600, vw - 32);
+          newHeight = Math.min(500, vh - 64);
+        } else if (isPdfModal || isDocxModal || isPngModal) {
+          newWidth = Math.min(900, vw - 32);
+          newHeight = Math.min(700, vh - 64);
+        } else {
+          newWidth = Math.min(896, vw - 32);
+          newHeight = Math.min(504, vh - 64);
+        }
+        
+        return {
+          width: Math.max(320, Math.min(newWidth, prevSize.width)),
+          height: Math.max(240, Math.min(newHeight, prevSize.height))
+        };
+      });
+      
+      // Reset position if modal is outside viewport
+      setPosition(prevPos => ({
+        x: Math.max(-50, Math.min(prevPos.x, vw - 100)),
+        y: Math.max(-50, Math.min(prevPos.y, vh - 100))
+      }));
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [fixedGifRatio, isGifModal, isPdfModal, isDocxModal, isPngModal]);
+
   // Clean up tab when component unmounts
   useEffect(() => {
     return () => {
@@ -192,7 +240,7 @@ const TerminalModal = ({ isOpen, onClose, title, content, isGifModal, gifSrc, fi
   if (!isOpen) return null;
 
   return (
-    <div className={`fixed inset-0 ${isMaximized ? '' : 'flex items-center justify-center p-4'} ${isMinimized ? 'z-30 pointer-events-none' : 'z-50'}`}>
+    <div className={`fixed inset-0 ${isMaximized ? '' : 'flex items-center justify-center p-2 sm:p-4'} ${isMinimized ? 'z-30 pointer-events-none' : 'z-50'}`}>
       {/* Backdrop */}
       {!isMinimized && !isMaximized && (
         <div 
@@ -215,34 +263,34 @@ const TerminalModal = ({ isOpen, onClose, title, content, isGifModal, gifSrc, fi
         }}
       >
         {/* Terminal Header */}
-        <div className="flex items-center justify-between p-3 bg-muted/50 border-b border-border select-none">
-          <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between p-2 sm:p-3 bg-muted/50 border-b border-border select-none">
+          <div className="flex items-center gap-1 sm:gap-2">
             <button
               onClick={handleClose}
-              className="terminal-control-btn w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 transition-colors"
+              className="terminal-control-btn w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-red-500 hover:bg-red-400 transition-colors"
               title="Close"
             />
             <button
               onClick={handleMinimize}
-              className="terminal-control-btn w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 transition-colors"
+              className="terminal-control-btn w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 transition-colors"
               title="Minimize"
             />
             <button
-              className="terminal-control-btn w-3 h-3 rounded-full bg-green-500 hover:bg-green-400 transition-colors cursor-default"
+              className="terminal-control-btn w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-green-500 hover:bg-green-400 transition-colors cursor-default"
               title="Maximize (disabled)"
             />
           </div>
           <div 
-            className="text-sm font-mono text-muted-foreground cursor-grab active:cursor-grabbing"
+            className="text-xs sm:text-sm font-mono text-muted-foreground cursor-grab active:cursor-grabbing truncate flex-1 mx-2 text-center"
             onMouseDown={handleMouseDown}
           >
-            [user@nada ~]$ cat {title}.txt
+            <span className="hidden xs:inline">[user@nada ~]$ cat </span>{title}<span className="hidden xs:inline">.txt</span>
           </div>
-          <div></div>
+          <div className="w-[60px] sm:w-[80px]"></div>
         </div>
         
         {/* Terminal Content */}
-        <div className={`${(isGifModal && fixedGifRatio) || isPdfModal || isDocxModal || isPngModal ? 'p-4' : 'p-6'} bg-background/95 font-mono text-sm leading-relaxed ${(isGifModal && fixedGifRatio) || isPdfModal || isDocxModal ? 'overflow-hidden' : 'overflow-auto'} flex-1 flex flex-col`}>
+        <div className={`${(isGifModal && fixedGifRatio) || isPdfModal || isDocxModal || isPngModal ? 'p-2 sm:p-4' : 'p-3 sm:p-6'} bg-background/95 font-mono text-xs sm:text-sm leading-relaxed ${(isGifModal && fixedGifRatio) || isPdfModal || isDocxModal ? 'overflow-hidden' : 'overflow-auto'} flex-1 flex flex-col`}>
           <div className="text-primary mb-2">
             $ cat {title}{isGifModal ? '.gif' : isPdfModal ? '.pdf' : isDocxModal ? (docxLoadFailed ? '.pdf' : '.docx') : isPngModal ? (pngLoadFailed ? '.pdf' : '.png') : '.txt'}
           </div>
