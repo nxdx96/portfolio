@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import WorkSection from "@/components/WorkSection";
+import TabBar from "@/components/TabBar";
 
 const Index = () => {
   useEffect(() => {
@@ -16,6 +17,7 @@ const Index = () => {
         <Hero />
         <WorkSection />
       </main>
+      <TabBar />
     </div>
   );
 };

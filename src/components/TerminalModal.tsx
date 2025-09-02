@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { X, Terminal, Mail, Linkedin, Github, Phone } from "lucide-react";
+import { useTabContext } from "@/contexts/TabContext";
 
 interface TerminalModalProps {
   isOpen: boolean;
@@ -19,8 +20,8 @@ interface TerminalModalProps {
 }
 
 const TerminalModal = ({ isOpen, onClose, title, content, isGifModal, gifSrc, fixedGifRatio, isPdfModal, pdfSrc, isDocxModal, docxSrc, isPngModal, pngSrc, isContactModal }: TerminalModalProps) => {
+  const { addTab, removeTab, updateTab } = useTabContext();
   const [isMinimized, setIsMinimized] = useState(false);
-  const [showMinimizeTab, setShowMinimizeTab] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
@@ -40,15 +41,31 @@ const TerminalModal = ({ isOpen, onClose, title, content, isGifModal, gifSrc, fi
     return { width: 896, height: 504 }; // Default max-w-4xl equivalent and 70vh at 720px height
   });
 
+  // Generate unique tab ID based on title
+  const tabId = `tab-${title.toLowerCase().replace(/\s+/g, '-')}`;
+
   const handleMinimize = () => {
     setIsMinimized(true);
-    // Show the minimized tab after animation
-    setTimeout(() => setShowMinimizeTab(true), 300);
+    // Add tab to global tab manager
+    addTab({
+      id: tabId,
+      title,
+      isMinimized: true,
+      onRestore: handleRestore,
+      onClose: handleClose
+    });
   };
 
   const handleRestore = () => {
-    setShowMinimizeTab(false);
     setIsMinimized(false);
+    // Update tab in global tab manager
+    updateTab(tabId, { isMinimized: false });
+  };
+
+  const handleClose = () => {
+    // Remove tab and close modal
+    removeTab(tabId);
+    onClose();
   };
 
   const handleMaximize = () => {
@@ -127,6 +144,33 @@ const TerminalModal = ({ isOpen, onClose, title, content, isGifModal, gifSrc, fi
       };
     }
   }, [isResizing]);
+
+  // Handle modal open/close state changes
+  useEffect(() => {
+    if (!isOpen) {
+      // Modal is closed, remove tab and reset minimized state
+      removeTab(tabId);
+      setIsMinimized(false);
+    }
+  }, [isOpen, tabId, removeTab]);
+
+  // Store the current removeTab and tabId in refs to avoid stale closures
+  const removeTabRef = useRef(removeTab);
+  const tabIdRef = useRef(tabId);
+  
+  // Update refs when values change
+  useEffect(() => {
+    removeTabRef.current = removeTab;
+    tabIdRef.current = tabId;
+  }, [removeTab, tabId]);
+
+  // Clean up tab when component unmounts
+  useEffect(() => {
+    return () => {
+      // Use refs to avoid stale closures
+      removeTabRef.current(tabIdRef.current);
+    };
+  }, []); // Empty dependency array - only runs on unmount
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -174,7 +218,7 @@ const TerminalModal = ({ isOpen, onClose, title, content, isGifModal, gifSrc, fi
         <div className="flex items-center justify-between p-3 bg-muted/50 border-b border-border select-none">
           <div className="flex items-center gap-2">
             <button
-              onClick={onClose}
+              onClick={handleClose}
               className="terminal-control-btn w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 transition-colors"
               title="Close"
             />
@@ -330,19 +374,6 @@ const TerminalModal = ({ isOpen, onClose, title, content, isGifModal, gifSrc, fi
         )}
       </div>
       
-      {/* Minimized Tab */}
-      {showMinimizeTab && (
-        <div className="fixed bottom-0 left-4 z-40 pointer-events-none">
-          <button
-            onClick={handleRestore}
-            className="flex items-center gap-2 bg-card border-t border-l border-r border-primary/30 rounded-t-lg px-4 py-2 shadow-lg hover:bg-muted transition-colors pointer-events-auto"
-            title="Restore terminal"
-          >
-            <Terminal size={16} className="text-primary" />
-            <span className="text-sm font-mono text-foreground">{title}</span>
-          </button>
-        </div>
-      )}
     </div>
   );
 };
