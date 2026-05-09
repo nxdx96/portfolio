@@ -65,7 +65,9 @@ I’ve worked on AI projects that leverage natural language processing and machi
 
 Driven by curiosity and problem-solving, I’m always exploring ways to combine software, data, and AI to make large-scale operations smarter and more reliable.
 
-When I'm not coding, you'll find me building keyboards, PCs, and playing video games.`;
+Currently challenging myself to build 30 projects in 30 days, pushing the boundaries of what I can create and learn.
+
+When I'm not coding, you'll find me exploring NYC speakeasies and restaurants, making art, or playing video games.`;
 
 
   return (

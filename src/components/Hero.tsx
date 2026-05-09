@@ -1,12 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { Github, ExternalLink } from "lucide-react";
-import { useState } from "react";
+import { Github } from "lucide-react";
+import { useState, useRef } from "react";
 import InteractiveTerminal from "./InteractiveTerminal";
 
 const ASCIICat = () => {
   const [cats, setCats] = useState<{id: number, x: number, y: number, catIndex: number}[]>([]);
   const [nextId, setNextId] = useState(0);
-  
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const catVariations = [
     {
       ascii: `     /\\_/\\
@@ -83,19 +84,22 @@ const ASCIICat = () => {
   ];
 
   const handleAreaClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = ((event.clientX - rect.left) / rect.width) * 100;
-    const y = ((event.clientY - rect.top) / rect.height) * 100;
-    
+    if (!containerRef.current) return;
+
+    const rect = containerRef.current.getBoundingClientRect();
+    // Calculate pixel position relative to container
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
     const randomCatIndex = Math.floor(Math.random() * catVariations.length);
-    
+
     const newCat = {
       id: nextId,
-      x: Math.max(0, Math.min(95, x)), // Use actual click position, keep within bounds
-      y: Math.max(0, Math.min(95, y)),
+      x,
+      y,
       catIndex: randomCatIndex
     };
-    
+
     setCats(prev => [...prev, newCat]);
     setNextId(prev => prev + 1);
   };
@@ -105,9 +109,9 @@ const ASCIICat = () => {
   };
 
   return (
-    <div className="relative w-full h-full min-h-[600px]">
+    <div ref={containerRef} className="relative w-full h-full min-h-[600px]">
       {/* Clickable area - expanded */}
-      <div 
+      <div
         onClick={handleAreaClick}
         className="absolute inset-0 cursor-crosshair bg-transparent z-0"
         title="Click anywhere to add cats!"
@@ -146,13 +150,12 @@ const ASCIICat = () => {
           key={cat.id}
           className="absolute z-20 animate-bounce pointer-events-none"
           style={{
-            left: `${cat.x}%`,
-            top: `${cat.y}%`,
+            left: cat.x,
+            top: cat.y,
             transform: 'translate(-50%, -50%)',
-            animationDuration: `${1 + Math.random() * 2}s`
           }}
         >
-          <pre 
+          <pre
             className="text-primary font-mono text-xs leading-tight bg-transparent border-none select-none hover:scale-110 transition-transform"
             title={catVariations[cat.catIndex].name}
           >
@@ -176,34 +179,15 @@ const Hero = () => {
             
             {/* Action Buttons */}
             <div className="flex gap-4 mt-8 justify-center">
-              <Button 
-                size="lg" 
-                className="group" 
+              <Button
+                size="lg"
+                className="group"
                 onClick={() => {
                   const projectsSection = document.querySelector('[data-section="projects"]');
                   if (!projectsSection) return;
-                  
-                  const targetPosition = projectsSection.offsetTop - 80;
-                  const startPosition = window.pageYOffset;
-                  const distance = targetPosition - startPosition;
-                  const duration = 800;
-                  const startTime = performance.now();
 
-                  function animation(currentTime: number) {
-                    const timeElapsed = currentTime - startTime;
-                    const progress = Math.min(timeElapsed / duration, 1);
-                    
-                    // Smooth cubic ease-out - very natural feeling
-                    const ease = 1 - Math.pow(1 - progress, 3);
-                    
-                    window.scrollTo(0, startPosition + distance * ease);
-                    
-                    if (timeElapsed < duration) {
-                      requestAnimationFrame(animation);
-                    }
-                  }
-                  
-                  requestAnimationFrame(animation);
+                  // Use native smooth scrolling with scroll-margin for proper offset
+                  projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }}
               >
                 <Github className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform" />

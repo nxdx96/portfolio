@@ -11,9 +11,8 @@ interface TerminalLine {
 const InteractiveTerminal = () => {
   const [lines, setLines] = useState<TerminalLine[]>([
     { id: "1", type: "output", content: "Nada's Software Engineer Portfolio Terminal v1.0.0" },
-    { id: "2", type: "output", content: "Type 'help' to see available commands. " },
+    { id: "2", type: "output", content: "Type 'help' to see available commands." },
     { id: "3", type: "output", content: "" },
-    { id: "4", type: "prompt", content: "[user@portfolio ~]$ " },
   ]);
   
   const [currentInput, setCurrentInput] = useState("");
@@ -177,7 +176,7 @@ const InteractiveTerminal = () => {
       "Professional Experience:",
       "Software Engineer III - Komodo Health (2022-2025)",
       "  • Architected AWS-based data infrastructure processing 350K+ documents quarterly with 99.5% uptime,",
-      "    cutting deployment times by 50% and eliminating $5M+ in annual third-party costs",
+      "    cutting deployment times by 50%",
       "  • Built AI-powered data mapping platform handling 12M+ provider records in Snowflake with vector search,",
       "    optimizing Airflow pipelines to reduce job failures by 70% and boost processing speeds by 40%",
       "  • Developed scalable Flask APIs and JavaScript dashboards serving thousands of daily requests,",
@@ -241,33 +240,31 @@ const InteractiveTerminal = () => {
 
   const executeCommand = async (cmd: string) => {
     const trimmedCmd = cmd.trim().toLowerCase();
-    
+
     // Add command to history
     setCommandHistory(prev => [...prev, cmd]);
     setHistoryIndex(-1);
-    
-    // First, add the command with prompt prefix 
-    setLines(prev => {
-      // Remove any prompts from the end and add the command
-      const withoutPrompts = prev.filter(line => line.type !== "prompt");
-      return [
-        ...withoutPrompts,
-        {
-          id: `cmd_${Date.now()}`,
-          type: "command", 
-          content: `[user@portfolio ~]$ ${cmd}`
-        }
-      ];
-    });
+
+    // Add the command line (prompt + command text as a single "command" line)
+    setLines(prev => [
+      ...prev,
+      {
+        id: `cmd_${Date.now()}`,
+        type: "command",
+        content: `[user@portfolio ~]$ ${cmd}`
+      }
+    ]);
 
     if (trimmedCmd === "clear") {
-      setTimeout(() => setLines([
-        { id: "1", type: "output", content: "Software Engineer Portfolio Terminal v1.0.0" },
-        { id: "2", type: "output", content: "Type 'help' to see available commands." },
-        { id: "3", type: "output", content: "" },
-        { id: Date.now().toString() + "_prompt", type: "prompt", content: "[user@portfolio ~]$ " }
-      ]), 100);
-      return; // No empty line needed for clear command
+      setTimeout(() => {
+        setLines([
+          { id: "1", type: "output", content: "Software Engineer Portfolio Terminal v1.0.0" },
+          { id: "2", type: "output", content: "Type 'help' to see available commands." },
+          { id: "3", type: "output", content: "" },
+        ]);
+        inputRef.current?.focus();
+      }, 100);
+      return;
     }
 
     // Handle cat command with file parameter
@@ -295,7 +292,6 @@ const InteractiveTerminal = () => {
           "enterprise-grade platforms that process millions of records.",
           "==========================================",
           "## Featured Achievements",
-          "• $15M+ in cost savings through infrastructure optimization",
           "• 99.5% uptime on critical data systems",
           "• AI platforms processing 12M+ healthcare records",
           "==========================================",
@@ -313,14 +309,9 @@ const InteractiveTerminal = () => {
         await typeText(`cat: ${fileName}: No such file or directory`);
       }
       
-      // Add empty line for spacing like real terminal
+      // Add empty line for spacing
       await typeText("");
-      
-      // Add new prompt after command execution
-      setLines(prev => [
-        ...prev,
-        { id: Date.now().toString() + "_prompt", type: "prompt", content: "[user@portfolio ~]$ " }
-      ]);
+      setTimeout(() => inputRef.current?.focus(), 0);
       return;
     }
 
@@ -328,15 +319,10 @@ const InteractiveTerminal = () => {
     if (trimmedCmd.startsWith("echo ")) {
       const text = cmd.slice(5); // Remove "echo "
       await typeText(text, 5);
-      
-      // Add empty line for spacing like real terminal
+
+      // Add empty line for spacing
       await typeText("");
-      
-      // Add new prompt after command execution
-      setLines(prev => [
-        ...prev,
-        { id: Date.now().toString() + "_prompt", type: "prompt", content: "[user@portfolio ~]$ " }
-      ]);
+      setTimeout(() => inputRef.current?.focus(), 0);
       return;
     }
 
@@ -368,20 +354,27 @@ const InteractiveTerminal = () => {
       await typeText(`bash: ${trimmedCmd}: command not found`);
     }
 
-    // Add empty line for spacing like real terminal
+    // Add empty line for spacing
     await typeText("");
-    
-    // Add new prompt after command execution
-    setLines(prev => [
-      ...prev,
-      { id: Date.now().toString() + "_prompt", type: "prompt", content: "[user@portfolio ~]$ " }
-    ]);
+
+    // Restore focus to input after async command execution
+    setTimeout(() => inputRef.current?.focus(), 0);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && currentInput.trim() && !isTyping) {
-      executeCommand(currentInput);
+    if (e.key === "Enter" && !isTyping) {
+      if (currentInput.trim()) {
+        executeCommand(currentInput);
+      } else {
+        // Handle empty command - show empty prompt line in history
+        setLines(prev => [
+          ...prev,
+          { id: `cmd_${Date.now()}`, type: "command", content: "[user@portfolio ~]$" }
+        ]);
+      }
       setCurrentInput("");
+      // Ensure input retains focus after command execution
+      setTimeout(() => inputRef.current?.focus(), 0);
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       if (commandHistory.length > 0 && historyIndex < commandHistory.length - 1) {
@@ -432,8 +425,8 @@ const InteractiveTerminal = () => {
     const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
     
     // First handle URLs, then emails
-    let result = text.split(urlRegex);
-    let finalParts: (string | JSX.Element)[] = [];
+    const result = text.split(urlRegex);
+    const finalParts: (string | JSX.Element)[] = [];
     
     result.forEach((part, index) => {
       if (part.match(urlRegex)) {
@@ -519,7 +512,7 @@ const InteractiveTerminal = () => {
           <div className="flex items-center flex-1 min-w-0">
             {currentInput === "" ? (
               <>
-                <span className="text-primary animate-pulse">█</span>
+                <span className="text-primary terminal-cursor">█</span>
                 <span className="text-muted-foreground ml-1 text-xs sm:text-sm truncate">
                   <span className="hidden sm:inline">Type a command...</span>
                   <span className="sm:hidden">Type cmd...</span>
@@ -528,7 +521,7 @@ const InteractiveTerminal = () => {
             ) : (
               <>
                 <span className="text-foreground text-xs sm:text-sm break-all">{currentInput}</span>
-                <span className="text-primary animate-pulse">█</span>
+                <span className="text-primary terminal-cursor">█</span>
               </>
             )}
             <input

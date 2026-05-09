@@ -11,129 +11,115 @@ interface Repository {
   updatedAt: string;
 }
 
+interface GitHubRepo {
+  name: string;
+  description: string | null;
+  language: string | null;
+  stargazers_count: number;
+  forks_count: number;
+  updated_at: string;
+  fork: boolean;
+  archived: boolean;
+}
+
+const GITHUB_USERNAME = "nxdx96";
+
+// GitHub language colors - extended list
+const languageColors: Record<string, string> = {
+  "JavaScript": "#F7DF1E",
+  "TypeScript": "#3178C6",
+  "Python": "#3776AB",
+  "Jupyter Notebook": "#DA5B0B",
+  "Java": "#B07219",
+  "C#": "#239120",
+  "C++": "#F34B7D",
+  "C": "#555555",
+  "Go": "#00ADD8",
+  "Rust": "#DEA584",
+  "Ruby": "#701516",
+  "PHP": "#4F5D95",
+  "Swift": "#FA7343",
+  "Kotlin": "#A97BFF",
+  "HTML": "#E34C26",
+  "CSS": "#1572B6",
+  "SCSS": "#C6538C",
+  "Shell": "#89E051",
+  "Dockerfile": "#384D54",
+};
+
+const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0) return "today";
+  if (diffDays === 1) return "1 day ago";
+  if (diffDays < 30) return `${diffDays} days ago`;
+  if (diffDays < 60) return "1 month ago";
+  if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`;
+  const years = Math.floor(diffDays / 365);
+  return `${years} year${years > 1 ? "s" : ""} ago`;
+};
+
 const WorkSection = () => {
-  const [repositories, setRepositories] = useState<Repository[]>([
-    {
-      name: "face-findr",
-      description: "Interactive beauty discovery app that maps makeup products to facial features using Flask, Postgres, p5.js, d3.js, and Plotly.",
-      language: "JavaScript",
-      languageColor: "#F7DF1E",
-      stars: 0,
-      forks: 0,
-      updatedAt: "4 months ago"
-    },
-    {
-      name: "policy-scraper-dashboard",
-      description: "Automates scraping of public policy data using Selenium, normalizes to JSON, and serves results in a searchable Flask dashboard.",
-      language: "Python",
-      languageColor: "#3776AB",
-      stars: 1,
-      forks: 0,
-      updatedAt: "4 months ago"
-    },
-    {
-      name: "prompt2json-extractor",
-      description: "LLM-powered structured data extractor: give it a prompt + raw text, get validated JSON back with local and cloud LLM support.",
-      language: "Python",
-      languageColor: "#3776AB",
-      stars: 0,
-      forks: 0,
-      updatedAt: "4 months ago"
-    },
-    {
-      name: "snowflake-fuzzy-matcher-lite",
-      description: "Local demo of large-scale healthcare provider matching using RapidFuzz and SQLite for data engineering workflows.",
-      language: "Python",
-      languageColor: "#3776AB",
-      stars: 0,
-      forks: 0,
-      updatedAt: "4 months ago"
-    },
-    {
-      name: "bootcamp-wrapped",
-      description: "A Jupyter Notebook–based project emulating Spotify's 'Wrapped,' aggregating top tracks across music platforms.",
-      language: "Jupyter Notebook",
-      languageColor: "#DA5B0B",
-      stars: 0,
-      forks: 0,
-      updatedAt: "4 months ago"
-    },
-    {
-      name: "solid-code-display",
-      description: "Interactive terminal-style portfolio website built with React, TypeScript, and Tailwind CSS showcasing software engineering projects.",
-      language: "TypeScript",
-      languageColor: "#3178C6",
-      stars: 0,
-      forks: 0,
-      updatedAt: "today"
-    }
-  ]);
-
-  const repoNames = [
-    "face-findr",
-    "policy-scraper-dashboard", 
-    "prompt2json-extractor",
-    "snowflake-fuzzy-matcher-lite",
-    "bootcamp-wrapped",
-    "solid-code-display"
-  ];
-
-  const languageColors: { [key: string]: string } = {
-    "JavaScript": "#F7DF1E",
-    "Python": "#3776AB",
-    "TypeScript": "#3178C6",
-    "Jupyter Notebook": "#DA5B0B"
-  };
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffTime = Math.abs(now.getTime() - date.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
-    if (diffDays === 1) return "1 day ago";
-    if (diffDays < 30) return `${diffDays} days ago`;
-    if (diffDays < 60) return "1 month ago";
-    if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`;
-    return `${Math.floor(diffDays / 365)} year${Math.floor(diffDays / 365) > 1 ? 's' : ''} ago`;
-  };
+  const [repositories, setRepositories] = useState<Repository[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchRepositories = async () => {
       try {
-        const fetchedRepos = await Promise.all(
-          repoNames.map(async (repoName) => {
-            const response = await fetch(`https://api.github.com/repos/nxdx96/${repoName}`);
-            if (!response.ok) return null;
-            
-            const repo = await response.json();
-            return {
-              name: repo.name,
-              description: repo.description || repositories.find(r => r.name === repoName)?.description || "No description available",
-              language: repo.language || "Unknown",
-              languageColor: languageColors[repo.language] || "#666666",
-              stars: repo.stargazers_count,
-              forks: repo.forks_count,
-              updatedAt: formatDate(repo.updated_at)
-            };
-          })
+        setIsLoading(true);
+        setError(null);
+
+        // Fetch all public repos for the user, sorted by most recently updated
+        const response = await fetch(
+          `https://api.github.com/users/${GITHUB_USERNAME}/repos?type=owner&sort=updated&per_page=100`
         );
 
-        const validRepos = fetchedRepos.filter(repo => repo !== null) as Repository[];
-        if (validRepos.length > 0) {
-          setRepositories(validRepos);
+        // Handle rate limiting
+        if (response.status === 403) {
+          const rateLimitRemaining = response.headers.get("X-RateLimit-Remaining");
+          if (rateLimitRemaining === "0") {
+            setError("GitHub API rate limit reached. Please try again later.");
+            return;
+          }
         }
-      } catch (error) {
-        console.log('Using fallback repository data');
+
+        if (!response.ok) {
+          throw new Error(`GitHub API error: ${response.status}`);
+        }
+
+        const repos: GitHubRepo[] = await response.json();
+
+        // Filter out forks and archived repos, then map to our format
+        const filteredRepos = repos
+          .filter((repo) => !repo.fork && !repo.archived)
+          .map((repo) => ({
+            name: repo.name,
+            description: repo.description || "No description available",
+            language: repo.language || "Unknown",
+            languageColor: languageColors[repo.language || ""] || "#666666",
+            stars: repo.stargazers_count,
+            forks: repo.forks_count,
+            updatedAt: formatDate(repo.updated_at),
+          }));
+
+        setRepositories(filteredRepos);
+      } catch (err) {
+        console.error("Failed to fetch repositories:", err);
+        setError("Failed to load repositories. Please refresh the page.");
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchRepositories();
   }, []);
 
-
   return (
-    <section className="py-16 px-6" data-section="projects">
+    <section className="py-16 px-6 scroll-mt-24" data-section="projects">
       <div className="max-w-6xl mx-auto">
         <div className="animate-slide-in">
           <div className="mb-16">
@@ -146,22 +132,51 @@ const WorkSection = () => {
               and data infrastructure
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed">
-              A selection of projects showcasing expertise in distributed systems, 
+              A selection of projects showcasing expertise in distributed systems,
               infrastructure, and scalable architecture.
             </p>
           </div>
-          
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-2 auto-rows-fr">
-            {repositories.map((repo, index) => (
-              <div 
-                key={repo.name} 
-                className="animate-fade-in h-full"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <RepositoryCard repository={repo} />
-              </div>
-            ))}
-          </div>
+
+          {/* Loading State */}
+          {isLoading && (
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-2 auto-rows-fr">
+              {[...Array(4)].map((_, i) => (
+                <div
+                  key={i}
+                  className="h-48 rounded-lg bg-card border border-border animate-pulse"
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Error State */}
+          {error && !isLoading && (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">{error}</p>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!isLoading && !error && repositories.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">No repositories found.</p>
+            </div>
+          )}
+
+          {/* Repository Grid */}
+          {!isLoading && !error && repositories.length > 0 && (
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-2 auto-rows-fr">
+              {repositories.map((repo, index) => (
+                <div
+                  key={repo.name}
+                  className="animate-fade-in h-full"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <RepositoryCard repository={repo} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>

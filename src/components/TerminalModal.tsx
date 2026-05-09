@@ -99,29 +99,29 @@ const TerminalModal = ({ isOpen, onClose, title, content, isGifModal, gifSrc, fi
     }
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
-    if (isDragging && !isMinimized) {
-      setPosition({
-        x: e.clientX - dragOffset.x,
-        y: e.clientY - dragOffset.y
-      });
-    }
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
   useEffect(() => {
-    if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-      return () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
-      };
-    }
-  }, [isDragging, dragOffset]);
+    if (!isDragging) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isMinimized) {
+        setPosition({
+          x: e.clientX - dragOffset.x,
+          y: e.clientY - dragOffset.y
+        });
+      }
+    };
+
+    const handleMouseUp = () => {
+      setIsDragging(false);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging, dragOffset, isMinimized]);
 
   const handleResizeMouseDown = (e: React.MouseEvent) => {
     if (isMinimized || (isGifModal && fixedGifRatio)) return;
@@ -130,31 +130,31 @@ const TerminalModal = ({ isOpen, onClose, title, content, isGifModal, gifSrc, fi
     e.stopPropagation();
   };
 
-  const handleResizeMouseMove = (e: MouseEvent) => {
-    if (isResizing && !isMinimized) {
-      const rect = document.querySelector('.terminal-modal')?.getBoundingClientRect();
-      if (rect) {
-        const newWidth = Math.max(400, e.clientX - rect.left);
-        const newHeight = Math.max(300, e.clientY - rect.top);
-        setSize({ width: newWidth, height: newHeight });
-      }
-    }
-  };
-
-  const handleResizeMouseUp = () => {
-    setIsResizing(false);
-  };
-
   useEffect(() => {
-    if (isResizing) {
-      document.addEventListener('mousemove', handleResizeMouseMove);
-      document.addEventListener('mouseup', handleResizeMouseUp);
-      return () => {
-        document.removeEventListener('mousemove', handleResizeMouseMove);
-        document.removeEventListener('mouseup', handleResizeMouseUp);
-      };
-    }
-  }, [isResizing]);
+    if (!isResizing) return;
+
+    const handleResizeMouseMove = (e: MouseEvent) => {
+      if (!isMinimized) {
+        const rect = document.querySelector('.terminal-modal')?.getBoundingClientRect();
+        if (rect) {
+          const newWidth = Math.max(400, e.clientX - rect.left);
+          const newHeight = Math.max(300, e.clientY - rect.top);
+          setSize({ width: newWidth, height: newHeight });
+        }
+      }
+    };
+
+    const handleResizeMouseUp = () => {
+      setIsResizing(false);
+    };
+
+    document.addEventListener('mousemove', handleResizeMouseMove);
+    document.addEventListener('mouseup', handleResizeMouseUp);
+    return () => {
+      document.removeEventListener('mousemove', handleResizeMouseMove);
+      document.removeEventListener('mouseup', handleResizeMouseUp);
+    };
+  }, [isResizing, isMinimized]);
 
   // Handle modal open/close state changes
   useEffect(() => {
