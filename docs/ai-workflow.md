@@ -63,7 +63,7 @@ Constraints prevent over-engineering and scope creep.
 Request small, verifiable changes rather than large rewrites.
 
 ```
-1. First, read the InteractiveTerminal component
+1. First, read the phosphor TerminalWindow component
 2. Identify where the cursor is rendered
 3. Update only the cursor animation class
 4. Verify the change doesn't break existing functionality
@@ -196,7 +196,7 @@ entering another command. The terminal should retain focus automatically.
 
 ### Diagnosis
 
-1. Read `InteractiveTerminal.tsx`
+1. Read `src/components/phosphor/TerminalWindow.tsx`
 2. Identify `handleKeyDown` and `executeCommand` functions
 3. Note that focus is lost after async command execution
 

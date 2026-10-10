@@ -1,108 +1,66 @@
-# Software Engineer Portfolio
+# Phosphor Orbit Portfolio
 
-A terminal-inspired portfolio website showcasing software engineering projects and professional experience.
+A full-viewport, dark-only terminal portfolio with a green phosphor display.
 
 **Live Site:** [nadaibrahim.vercel.app](https://nadaibrahim.vercel.app/)
 
 ## Features
 
-- **Interactive Terminal** - Command-line interface with working commands (`help`, `about`, `skills`, `experience`, `projects`, `contact`, `cat`, `pet`)
-- **ASCII Cat Playground** - Click anywhere to spawn animated ASCII cats
-- **Dynamic GitHub Integration** - Automatically fetches and displays public repositories
-- **Draggable Modal Windows** - macOS-style windows for about, resume, and contact sections
-- **Dark/Light Theme** - Dracula color scheme with system preference detection
-- **Responsive Design** - Mobile-first layout with adaptive components
+- Interactive terminal with command history, Tab completion, and commands including `help`, `about`, `skills`, `experience`, `projects`, `resume`, `contact`, `cat`, and `pet`.
+- Keyboard shortcuts: F1 help, F2 about, F3 resume, F4 projects, F5 contact, F10 clear, Ctrl+L clear, and Escape to close panels.
+- Animated ASCII backgrounds and a desktop orbit viewer with draggable cats and other objects; reroll selects a new object and background.
+- About, resume, projects, and contact panels with text decryption effects.
+- Live GitHub repositories with a fallback when the API is unavailable.
+- Responsive layout, reduced-motion support, and a downloadable resume.
 
-## Tech Stack
+## Stack and source
 
-- **Framework:** React 18 with TypeScript
-- **Build Tool:** Vite
-- **Styling:** Tailwind CSS
-- **UI Components:** shadcn/ui (Radix primitives)
-- **Routing:** React Router DOM
-- **Deployment:** Vercel
+React 18, TypeScript, Vite, Tailwind CSS, and React Router.
 
-## Project Structure
-
-```
+```text
 src/
-├── components/
-│   ├── ui/              # shadcn/ui base components
-│   ├── Hero.tsx         # Landing section with terminal + cat playground
-│   ├── InteractiveTerminal.tsx  # Terminal emulator
-│   ├── Navigation.tsx   # Top navbar with modal triggers
-│   ├── TerminalModal.tsx # Draggable window system
-│   ├── WorkSection.tsx  # GitHub projects gallery
-│   ├── RepositoryCard.tsx # Project card component
-│   ├── TabBar.tsx       # Minimized windows taskbar
-│   └── Theme*.tsx       # Theme provider and toggle
-├── contexts/
-│   └── TabContext.tsx   # Global state for minimized windows
-├── hooks/               # Custom React hooks
-├── lib/                 # Utilities
-├── pages/               # Route components
-└── index.css            # Global styles and design tokens
+  components/phosphor/  # Portfolio layout, terminal, orbit viewer, and panels
+  lib/phosphor/         # ASCII renderers, effects, and display constants
+  lib/terminal/         # Command engine, profile, and repository fetching
+  pages/                # Home and not-found routes
+  App.tsx               # Routes for /, /home, and unmatched paths
+  index.css             # Phosphor styles and responsive sizing
+public/
+  resume.pdf            # Downloadable resume
+  favicon.svg
+  robots.txt
+design_handoff_phosphor_orbit/
+  reference/            # Original mockup and rendering source for comparison
+  screenshots/          # Object design references
 ```
 
-## Local Development
+The original mockup and handoff are retained as design references. The production app uses the React components and TypeScript modules in `src/`.
 
-### Prerequisites
+## Local development
 
-- Node.js 18+
-- npm or yarn
-
-### Setup
+Use Node.js 18+ and npm:
 
 ```bash
-# Clone the repository
-git clone https://github.com/nxdx96/portfolio.git
-cd portfolio
-
-# Install dependencies
 npm install
-
-# Start development server
 npm run dev
 ```
 
-The app runs at `http://localhost:8080`.
-
-### Available Scripts
+The dev server runs at `http://localhost:8080`. `package-lock.json` is the dependency lockfile.
 
 | Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server with hot reload |
-| `npm run build` | Create production build |
-| `npm run preview` | Preview production build locally |
+| --- | --- |
+| `npm run dev` | Start the development server |
+| `npm run build` | Create the production build in `dist/` |
+| `npm run preview` | Preview the production build |
 | `npm run lint` | Run ESLint |
 | `npm run test` | Run lint and build checks |
+| `npx tsc --noEmit -p tsconfig.app.json` | Check application types |
 
-## Deployment
+Deploy `dist/` to a static host with SPA fallback routing enabled. The portfolio is hosted on Vercel.
 
-The site deploys automatically to Vercel on push to `main`. For manual deployment:
+## Development workflow
 
-```bash
-npm run build
-```
-
-The build output in `dist/` can be deployed to any static hosting service.
-
-## Architecture Notes
-
-- **Terminal State:** Managed via React useState with command history and typing animations
-- **Theme System:** Uses `next-themes` with CSS variables for seamless dark/light switching
-- **GitHub API:** Client-side fetching with graceful fallback for rate limits
-- **Window Management:** Custom draggable/resizable implementation using mouse events
-- **Animations:** CSS keyframes with `prefers-reduced-motion` support
-
-## AI-Assisted Development
-
-This project demonstrates effective AI-assisted development workflows. See [docs/ai-workflow.md](docs/ai-workflow.md) for details on:
-
-- How AI tools were integrated into the development process
-- Prompt engineering patterns used
-- Output validation strategies
-- Maintaining code quality with AI assistance
+See [docs/ai-workflow.md](docs/ai-workflow.md) for the development and validation workflow.
 
 ## License
 

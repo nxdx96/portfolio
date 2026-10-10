@@ -1,25 +1,5 @@
-import { useEffect } from "react";
-import Navigation from "@/components/Navigation";
-import Hero from "@/components/Hero";
-import WorkSection from "@/components/WorkSection";
-import TabBar from "@/components/TabBar";
+import PhosphorPortfolio from "@/components/phosphor/Portfolio";
 
-const Index = () => {
-  useEffect(() => {
-    // Always scroll to top when component mounts (page load/refresh/navigation)
-    window.scrollTo(0, 0);
-  }, []);
-
-  return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-      <main>
-        <Hero />
-        <WorkSection />
-      </main>
-      <TabBar />
-    </div>
-  );
-};
+const Index = () => <PhosphorPortfolio />;
 
 export default Index;

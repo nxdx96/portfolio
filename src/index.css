@@ -2,428 +2,81 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+html { background: #020703; color-scheme: dark; }
+body {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'liga' 1, 'calt' 1;
+}
 
-@layer base {
-  :root {
-    /* Dracula Light Mode - Light background with dark text */
-    --background: 60 30% 96%; /* #f8f8f2 - Dracula foreground as light background */
-    --foreground: 231 15% 18%; /* #282a36 - Dracula background as dark text */
-
-    --card: 0 0% 100%; /* #ffffff - Pure white for cards */
-    --card-foreground: 231 15% 18%; /* #282a36 - Dark text on light cards */
-
-    --popover: 0 0% 100%; /* #ffffff - White popover */
-    --popover-foreground: 231 15% 18%; /* #282a36 - Dark text */
-
-    /* Darker Dracula Purple for light mode contrast */
-    --primary: 250 100% 60%; /* #8764d8 - Darker purple for light mode */
-    --primary-foreground: 0 0% 100%; /* #ffffff - White text on dark primary */
-
-    /* Light gray for secondary */
-    --secondary: 225 9% 85%; /* #d6d8dc - Light gray */
-    --secondary-foreground: 231 15% 18%; /* #282a36 - Dark text */
-
-    --muted: 225 9% 95%; /* #f1f1f3 - Very light gray for muted areas */
-    --muted-foreground: 225 9% 59%; /* #6272a4 - Dracula comment for muted text */
-
-    /* Darker Dracula Pink for light mode */
-    --accent: 326 100% 50%; /* #e619a3 - Darker pink for contrast */
-    --accent-foreground: 0 0% 100%; /* #ffffff - White text on dark accent */
-
-    --destructive: 0 100% 50%; /* #dc2626 - Darker red for light mode */
-    --destructive-foreground: 0 0% 100%; /* #ffffff - White text on red */
-
-    --border: 225 9% 85%; /* #d6d8dc - Light border */
-    --input: 225 9% 95%; /* #f1f1f3 - Light input background */
-    --ring: 250 100% 60%; /* #8764d8 - Darker purple for focus rings */
-
-    --radius: 0.375rem;
-
-    /* Dracula colors adapted for light mode */
-    --dracula-cyan: 191 97% 40%; /* #1ba3c7 - Darker cyan */
-    --dracula-green: 135 94% 35%; /* #2a8a3f - Darker green */
-    --dracula-orange: 31 100% 50%; /* #cc6600 - Darker orange */
-    --dracula-pink: 326 100% 50%; /* #e619a3 - Darker pink */
-    --dracula-purple: 250 100% 60%; /* #8764d8 - Darker purple */
-    --dracula-red: 0 100% 50%; /* #cc0000 - Darker red */
-    --dracula-yellow: 65 92% 40%; /* #996600 - Darker yellow */
-
-    --sidebar-background: 60 30% 96%;
-    --sidebar-foreground: 231 15% 18%;
-    --sidebar-primary: 250 100% 60%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 326 100% 50%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 225 9% 85%;
-    --sidebar-ring: 250 100% 60%;
-  }
-
-  .dark {
-    /* Dracula Dark Mode - Original dark theme */
-    --background: 231 15% 18%; /* #282a36 - Dracula background */
-    --foreground: 60 30% 96%; /* #f8f8f2 - Dracula foreground */
-
-    --card: 232 14% 31%; /* #44475a - Dracula current line for cards */
-    --card-foreground: 60 30% 96%; /* #f8f8f2 - Bright text on cards */
-
-    --popover: 231 15% 18%; /* #282a36 - Dracula background */
-    --popover-foreground: 60 30% 96%; /* #f8f8f2 - Dracula foreground */
-
-    /* Dracula Purple for primary */
-    --primary: 250 100% 80%; /* #bd93f9 - Dracula purple */
-    --primary-foreground: 231 15% 18%; /* #282a36 - dark background on bright primary */
-
-    /* Dracula Current Line */
-    --secondary: 232 14% 31%; /* #44475a - Dracula current line */
-    --secondary-foreground: 60 30% 96%; /* #f8f8f2 - bright text */
-
-    --muted: 231 15% 18%; /* #282a36 - Dracula background for muted */
-    --muted-foreground: 225 9% 59%; /* #6272a4 - Dracula comment */
-
-    /* Dracula Pink for accents */
-    --accent: 326 100% 74%; /* #ff79c6 - Dracula pink */
-    --accent-foreground: 231 15% 18%; /* #282a36 - dark text on bright accent */
-
-    --destructive: 0 100% 67%; /* #ff5555 - Dracula red */
-    --destructive-foreground: 60 30% 96%; /* #f8f8f2 - bright text on red */
-
-    --border: 232 14% 31%; /* #44475a - Dracula current line for borders */
-    --input: 232 14% 31%; /* #44475a - Dracula current line for inputs */
-    --ring: 250 100% 80%; /* #bd93f9 - Dracula purple for focus rings */
-
-    /* Dracula color palette - original bright colors */
-    --dracula-cyan: 191 97% 77%; /* #8be9fd - Dracula cyan */
-    --dracula-green: 135 94% 65%; /* #50fa7b - Dracula green */
-    --dracula-orange: 31 100% 71%; /* #ffb86c - Dracula orange */
-    --dracula-pink: 326 100% 74%; /* #ff79c6 - Dracula pink */
-    --dracula-purple: 250 100% 80%; /* #bd93f9 - Dracula purple */
-    --dracula-red: 0 100% 67%; /* #ff5555 - Dracula red */
-    --dracula-yellow: 65 92% 76%; /* #f1fa8c - Dracula yellow */
-
-    --sidebar-background: 231 15% 18%; /* Match main background */
-    --sidebar-foreground: 60 30% 96%; /* Match main foreground */
-    --sidebar-primary: 250 100% 80%; /* Dracula purple */
-    --sidebar-primary-foreground: 231 15% 18%; /* Dark text on bright primary */
-    --sidebar-accent: 326 100% 74%; /* Dracula pink */
-    --sidebar-accent-foreground: 231 15% 18%; /* Dark text on bright accent */
-    --sidebar-border: 232 14% 31%; /* Dracula current line */
-    --sidebar-ring: 250 100% 80%; /* Dracula purple */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
+html, body, #root { height: 100%; }
+body { margin: 0; overflow: hidden; }
 
-  body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-feature-settings: 'liga' 1, 'calt' 1; /* Enable ligatures like JetBrains */
-    letter-spacing: 0.025em; /* Slight letter spacing for readability */
-  }
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes pulse { 50% { opacity: .25; } }
+@keyframes flicker { 0%, 100% { opacity: 1; } 8% { opacity: .8; } 10% { opacity: 1; } 55% { opacity: .92; } }
+@keyframes roll { from { transform: translateY(-100%); } to { transform: translateY(100%); } }
+@keyframes decrypt { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0); } }
 
-  /* System theme support */
-  html {
-    color-scheme: light dark; /* Support both light and dark system themes */
-    scroll-behavior: smooth; /* Global smooth scrolling */
-  }
-  
-  /* System preference detection fallback */
-  @media (prefers-color-scheme: dark) {
-    html:not(.light) {
-      color-scheme: dark;
-    }
-  }
-  
-  @media (prefers-color-scheme: light) {
-    html:not(.dark) {
-      color-scheme: light;
-    }
-  }
-
-  /* Professional typography */
-  h1 {
-    @apply text-4xl font-semibold tracking-tight;
-  }
-
-  h2 {
-    @apply text-2xl font-semibold tracking-tight;
-  }
-
-  h3 {
-    @apply text-xl font-semibold tracking-tight;
-  }
-
-  /* Smooth transitions */
-  * {
-    @apply transition-colors duration-200;
-  }
-
-  /* Custom animations */
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateX(-10px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-
-  .animate-fade-in {
-    animation: fadeIn 0.6s ease-out;
-  }
-
-  .animate-slide-in {
-    animation: slideIn 0.5s ease-out;
-  }
-
-  /* Dracula code highlighting */
-  code {
-    @apply bg-muted px-1 py-0.5 rounded text-sm font-mono;
-    color: hsl(var(--dracula-cyan));
-  }
-
-  pre {
-    @apply bg-card p-4 rounded-lg overflow-x-auto;
-    border: 1px solid hsl(var(--border));
-  }
-
-  /* Dracula selection */
-  ::selection {
-    background-color: hsl(var(--dracula-purple) / 0.3);
-    color: hsl(var(--foreground));
-  }
-
-  /* JetBrains-style scrollbar */
-  ::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: hsl(var(--muted));
-    border-radius: 6px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: hsl(var(--border));
-    border-radius: 6px;
-    border: 2px solid hsl(var(--muted));
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--accent));
-  }
-
-  /* WCAG AA compliant focus styles */
-  *:focus-visible {
-    outline: 2px solid hsl(var(--ring));
-    outline-offset: 2px;
-    box-shadow: 0 0 0 4px hsl(var(--ring) / 0.2);
-  }
-
-  /* Enhanced focus for interactive elements */
-  button:focus-visible,
-  a:focus-visible,
-  input:focus-visible,
-  select:focus-visible,
-  textarea:focus-visible {
-    outline: 2px solid hsl(var(--ring));
-    outline-offset: 2px;
-    box-shadow: 0 0 0 4px hsl(var(--ring) / 0.2);
-  }
-
-  /* JetBrains-style input field enhancements */
-  input[type="text"],
-  input[type="email"],
-  input[type="password"],
-  textarea {
-    background-color: hsl(var(--input));
-    border-color: hsl(var(--border));
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  input[type="text"]:focus,
-  input[type="email"]:focus,
-  input[type="password"]:focus,
-  textarea:focus {
-    border-color: hsl(var(--dracula-purple));
-    box-shadow: 0 0 0 2px hsl(var(--dracula-purple) / 0.2);
-  }
-
-  /* Enhanced button hover states */
-  button:not(:disabled):hover {
-    transform: translateY(-1px);
-    transition: all 0.2s ease;
-  }
-
-  /* JetBrains-style active states */
-  button:active,
-  .button:active {
-    transform: translateY(0);
-  }
-
-  /* WCAG AA accessibility enhancements */
-  
-  /* Ensure minimum target sizes (44px x 44px) for interactive elements */
-  button,
-  a,
-  input,
-  select,
-  textarea {
-    min-height: 44px;
-    min-width: 44px;
-  }
-  
-  /* Exception for inline elements that shouldn't be forced to 44px */
-  a:not(.button):not([role="button"]) {
-    min-height: unset;
-    min-width: unset;
-  }
-  
-  /* Exception for terminal control buttons */
-  .terminal-control-btn {
-    min-height: unset;
-    min-width: unset;
-  }
-
-  /* High contrast mode support */
-  @media (prefers-contrast: high) {
-    :root {
-      --border: 0 0 0; /* Black borders in high contrast */
-      --ring: 0 0 255; /* Blue focus rings in high contrast */
-    }
-    
-    .dark {
-      --border: 255 255 255; /* White borders in high contrast dark mode */
-      --ring: 0 255 255; /* Cyan focus rings in high contrast dark mode */
-    }
-  }
-
-  /* Reduced motion support */
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
-
-  /* Enhanced hover states with sufficient color change */
-  button:not(:disabled):hover,
-  a:hover {
-    filter: brightness(1.1) saturate(1.1);
-  }
-
-  /* Ensure text remains readable in all states */
-  .text-muted-foreground {
-    color: hsl(var(--muted-foreground)) !important;
-  }
-
-  /* Terminal-specific scrollbar styles */
-  .scrollbar-thin {
-    scrollbar-width: thin;
-  }
-  
-  .scrollbar-thumb-border {
-    scrollbar-color: hsl(var(--border)) transparent;
-  }
-  
-  .scrollbar-track-transparent {
-    scrollbar-track-color: transparent;
-  }
-
-  /* Terminal cursor animation */
-  @keyframes terminal-blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
-  }
-
-  .terminal-cursor {
-    animation: terminal-blink 0.7s infinite;
-  }
-
-  /* Terminal typing effect */
-  @keyframes terminal-typing {
-    from { 
-      width: 0; 
-    }
-    to { 
-      width: 100%; 
-    }
-  }
-
-  .terminal-typing {
-    animation: terminal-typing 2s steps(40, end), terminal-blink 1s infinite step-end;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-
-  /* Floating scroll animations */
-  @keyframes floatIn {
-    0% {
-      opacity: 0;
-      transform: translateY(60px) scale(0.95);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-
-  @keyframes floatInLeft {
-    0% {
-      opacity: 0;
-      transform: translateX(-40px) translateY(30px) scale(0.95);
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(0) translateY(0) scale(1);
-    }
-  }
-
-  @keyframes floatInRight {
-    0% {
-      opacity: 0;
-      transform: translateX(40px) translateY(30px) scale(0.95);
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(0) translateY(0) scale(1);
-    }
-  }
-
-  /* Simple smooth scrolling */
-  html {
-    scroll-behavior: smooth;
-  }
-
-  /* Disable smooth scrolling for users who prefer reduced motion */
-  @media (prefers-reduced-motion: reduce) {
-    *, html {
-      scroll-behavior: auto !important;
-    }
-  }
-
-  /* Pixelated font using Pixelify Sans */
-  .pixelated-text {
-    font-family: 'Pixelify Sans', 'Courier New', monospace;
-    font-weight: 600;
-    font-size: 32px;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -webkit-crisp-edges;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-    text-rendering: geometricPrecision;
-    -webkit-font-smoothing: none;
-    -moz-osx-font-smoothing: unset;
-    font-smooth: never;
-    letter-spacing: 1px;
-  }
+.phos-root ::selection { background: #4af07a; color: #020703; }
+/* The reference desktop is 2551 CSS px wide (3826 image px at DPR 1.5).
+   Size the desktop type and spacing with its viewport, without a root transform. */
+@property --phos-unit {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 1px;
 }
+.phos-root { --phos-unit: clamp(.666667px, calc(100vw / 2551), 1px); }
+/* ASCII rendering surfaces. */
+.phos-root pre {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  letter-spacing: normal;
+  white-space: pre;
+}
+.phos-root :is(button, a, input):focus-visible { outline: 2px solid #4af07a; outline-offset: 2px; }
+@media (max-width: 719px) {
+  .phos-root { --phos-unit: 1px; }
+}
+@media (max-width: 380px) {
+  .phos-root { --phos-hud-size: 17; --phos-tag-size: 18; --phos-title-size: 16; }
+}
+@media (pointer: coarse) {
+  .phos-root .phos-fkey { min-height: 44px; }
+}
+.phos-root a { color: #c4ffd2; }
+.phos-root a:hover { color: #fff; }
+
+.phos-fkey {
+  all: unset;
+  display: flex;
+  align-items: center;
+  gap: calc(8 * var(--phos-unit));
+  min-height: calc(32 * var(--phos-unit));
+  cursor: pointer;
+  padding: 0 calc(10 * var(--phos-unit)) 0 calc(4 * var(--phos-unit));
+  color: #c4ffd2;
+}
+.phos-fkey:hover { background: rgba(74, 240, 122, .12); color: #fff; }
+
+.phos-reroll { all: unset; cursor: pointer; color: #c4ffd2; }
+.phos-reroll:hover { color: #fff; }
+
+.phos-close { all: unset; cursor: pointer; color: #3fb168; }
+.phos-close:hover { color: #e6ffec; }
+
+.phos-dl:hover { background: #e6ffec !important; color: #020703 !important; }
+
+.phos-contact:hover { background: rgba(74, 240, 122, .1); border-color: #4af07a !important; color: #fff !important; }
+
+.phos-repo:hover { background: rgba(74, 240, 122, .08); }

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"><style>body{margin:0}a{color:#c4ffd2}a:hover{color:#fff}@keyframes blink{50%{opacity:0}}@keyframes flicker{0%,100%{opacity:1}8%{opacity:.8}10%{opacity:1}55%{opacity:.92}}@keyframes roll{from{transform:translateY(-100%)}to{transform:translateY(100%)}}@keyframes pulse{50%{opacity:.25}}@keyframes decrypt{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0)}}::selection{background:#4af07a;color:#020703}</style></helmet><div ref="{{ rootRef }}" onClick="{{ focus }}" data-screen-label="signal-orbit" style="position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#071a0c 0%,#030a04 65%,#010301 100%);color:#c4ffd2;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:14px;line-height:1.6;display:flex;flex-direction:column;container-type:inline-size;cursor:text;text-shadow:0 0 4px rgba(74,240,122,.3)">
+<input ref="{{ inputRef }}" value="{{ input }}" onChange="{{ onInput }}" onKeyDown="{{ onKey }}" autoCapitalize="off" autoCorrect="off" spellCheck="{{ false }}" aria-label="terminal input" style="position:absolute;opacity:0;width:1px;height:1px;left:0;top:0;border:0;padding:0"><pre ref="{{ preRef }}" aria-hidden="true" style="position:absolute;inset:0;margin:0;overflow:hidden;pointer-events:none;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:16px;color:#4af07a;opacity:.35;text-shadow:0 0 6px rgba(74,240,122,.6);user-select:none"></pre>
+<div style="position:relative;flex:none;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:12px clamp(14px,3cqw,36px);font-family:'VT323',ui-monospace,monospace;font-size:19px;line-height:1.2;letter-spacing:.06em;text-transform:uppercase">
+<div style="display:flex;flex-direction:column"><span style="color:#4af07a">◉ signal // nada-os v2.0</span><span style="color:#3fb168">clearance: public</span></div>
+<div style="display:flex;flex-direction:column;align-items:flex-end;text-align:right"><span style="display:flex;gap:8px;align-items:center;color:#e6ffec"><span style="width:8px;height:8px;background:#4af07a;box-shadow:0 0 8px #4af07a;animation:pulse 1.2s steps(2) infinite"></span>open to work</span><span style="color:#3fb168">remote ok</span></div>
+</div>
+
+<div style="position:relative;flex:1;min-height:0;display:flex;gap:clamp(10px,2cqw,20px);padding:0 clamp(10px,3cqw,36px) clamp(10px,1.5cqw,16px)">
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:clamp(8px,1.2cqw,14px)">
+<div ref="{{ wrapRef }}" style="position:relative;flex:1;min-height:0;overflow:hidden;display:flex;align-items:flex-start;gap:clamp(16px,3cqw,40px)"><div style="position:relative;flex:1;min-width:0;padding:clamp(4px,1.5cqw,24px) 2px 0;user-select:none">
+<h1 ref="{{ heroRef }}" aria-label="Nada Ibrahim" style="margin:0 0 14px;font-family:'VT323',ui-monospace,monospace;font-weight:400;font-size:clamp(76px,17cqw,230px);line-height:.78;color:#e6ffec;text-shadow:0 0 18px rgba(74,240,122,.55),0 0 2px #fff;display:flex;flex-wrap:wrap;column-gap:.28em"><span>{{ heroA }}</span><span>{{ heroB }}</span></h1>
+<div style="display:flex;flex-wrap:wrap;gap:4px 14px;font-family:'VT323',ui-monospace,monospace;font-size:22px;line-height:1.1;letter-spacing:.06em;text-transform:uppercase;color:#4af07a"><span>software engineer</span><span style="color:#2f9a55">/</span><span>full-stack</span><span style="color:#2f9a55">/</span><span>backend</span><span style="color:#2f9a55">/</span><span>data</span></div>
+</div></div>
+<div style="flex:none;min-width:0;display:flex;flex-direction:column;background:rgba(2,7,3,.93);border:1px solid #2f9a55;box-shadow:0 0 30px rgba(0,0,0,.6)">
+<div style="flex:none;display:flex;justify-content:space-between;gap:12px;padding:3px 14px;border-bottom:1px solid #14401f;font-family:'VT323',ui-monospace,monospace;font-size:18px;letter-spacing:.08em;text-transform:uppercase;color:#3fb168"><span>■ tty1 — C:\PORTFOLIO</span><span>[tab] complete</span></div>
+<div ref="{{ scrollRef }}" style="height:clamp(190px,24cqw,300px);overflow-y:auto;padding:10px 14px"><sc-for list="{{ lines }}" as="l" hint-placeholder-count="3"><div style="display:flex;flex-wrap:wrap;white-space:pre-wrap;word-break:break-word;min-height:1.6em"><sc-if value="{{ l.isText }}" hint-placeholder-val="{{ true }}"><span style="color:{{ l.color }}">{{ l.text }}</span></sc-if><sc-if value="{{ l.isLink }}" hint-placeholder-val="{{ false }}"><a href="{{ l.href }}" target="_blank" rel="noopener" style="color:{{ l.color }};text-decoration:underline;text-underline-offset:3px">{{ l.text }}</a></sc-if></div></sc-for>
+<sc-if value="{{ booted }}" hint-placeholder-val="{{ true }}"><div style="display:flex;gap:10px;white-space:pre-wrap;word-break:break-all"><span style="flex:none;color:#4af07a">{{ prompt }}</span><span style="color:#e6ffec">{{ input }}</span><span style="display:inline-block;width:9px;height:1.2em;background:#4af07a;vertical-align:text-bottom;animation:blink .9s steps(1) infinite"></span></div></sc-if></div>
+
+</div>
+</div>
+<sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}"><div data-nofocus="1" style="flex:none;width:clamp(300px,34cqw,480px);display:flex;flex-direction:column;min-height:0;background:rgba(2,7,3,.72);border:1px solid #1f6b3a;font-family:'VT323',ui-monospace,monospace;font-size:18px;line-height:1.2;text-transform:uppercase;cursor:default">
+<div style="flex:none;display:flex;justify-content:space-between;gap:10px;padding:4px 12px;border-bottom:1px solid #14401f;color:#3fb168"><span style="color:#4af07a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">▓ orbit // {{ shapeName }}</span><span style="display:flex;gap:12px;white-space:nowrap"><button onClick="{{ reroll }}" title="New shape and background" style="all:unset;cursor:pointer;color:#c4ffd2" style-hover="color:#fff">[↻ reroll]</button></span></div>
+<pre ref="{{ objRef }}" aria-hidden="true" style="flex:1;min-height:0;margin:0;overflow:hidden;cursor:grab;touch-action:none;font-family:'IBM Plex Mono',monospace;font-size:9px;line-height:10px;color:#c4ffd2;text-shadow:0 0 5px rgba(74,240,122,.7);user-select:none;text-transform:none"></pre>
+<div style="flex:none;display:grid;grid-template-columns:auto 1fr;gap:0 14px;padding:6px 12px 8px;border-top:1px solid #14401f"><span style="color:#3fb168">base</span><span style="color:#e6ffec">new york · 40.71n 74.00w</span><span style="color:#3fb168">local</span><span style="color:#e6ffec">{{ time }} est</span><span style="color:#3fb168">range</span><span style="color:#e6ffec">remote ok</span><span style="color:#3fb168">input</span><span style="color:#e6ffec">drag to spin</span></div>
+</div></sc-if>
+</div>
+<div data-nofocus="1" style="position:relative;flex:none;display:flex;flex-wrap:wrap;gap:2px 6px;padding:6px clamp(10px,2cqw,30px) 8px;border-top:1px solid #1f6b3a;background:rgba(2,7,3,.94);font-family:'VT323',ui-monospace,monospace;font-size:20px;line-height:1.2;cursor:default"><button onClick="{{ runHelp }}" style="all:unset;display:flex;align-items:center;gap:8px;min-height:36px;cursor:pointer;padding:0 10px 0 4px;color:#c4ffd2" style-hover="background:rgba(74,240,122,.12);color:#fff"><span style="background:#4af07a;color:#020703;padding:0 6px;text-shadow:none">F1</span>HELP</button><button onClick="{{ runAbout }}" style="all:unset;display:flex;align-items:center;gap:8px;min-height:36px;cursor:pointer;padding:0 10px 0 4px;color:#c4ffd2" style-hover="background:rgba(74,240,122,.12);color:#fff"><span style="background:#4af07a;color:#020703;padding:0 6px;text-shadow:none">F2</span>ABOUT</button><button onClick="{{ runResume }}" style="all:unset;display:flex;align-items:center;gap:8px;min-height:36px;cursor:pointer;padding:0 10px 0 4px;color:#c4ffd2" style-hover="background:rgba(74,240,122,.12);color:#fff"><span style="background:#4af07a;color:#020703;padding:0 6px;text-shadow:none">F3</span>RESUME</button><button onClick="{{ runProjects }}" style="all:unset;display:flex;align-items:center;gap:8px;min-height:36px;cursor:pointer;padding:0 10px 0 4px;color:#c4ffd2" style-hover="background:rgba(74,240,122,.12);color:#fff"><span style="background:#4af07a;color:#020703;padding:0 6px;text-shadow:none">F4</span>PROJECTS</button><button onClick="{{ runContact }}" style="all:unset;display:flex;align-items:center;gap:8px;min-height:36px;cursor:pointer;padding:0 10px 0 4px;color:#c4ffd2" style-hover="background:rgba(74,240,122,.12);color:#fff"><span style="background:#4af07a;color:#020703;padding:0 6px;text-shadow:none">F5</span>CONTACT</button><button onClick="{{ runClear }}" style="all:unset;display:flex;align-items:center;gap:8px;min-height:36px;cursor:pointer;padding:0 10px 0 4px;color:#c4ffd2" style-hover="background:rgba(74,240,122,.12);color:#fff"><span style="background:#4af07a;color:#020703;padding:0 6px;text-shadow:none">F10</span>CLEAR</button></div>
+<sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ false }}">
+<div data-nofocus="1" onClick="{{ close }}" style="position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;padding:clamp(8px,3cqw,48px);background:rgba(1,5,2,.86);cursor:default">
+<div onClick="{{ stop }}" style="position:relative;width:min(880px,100%);max-height:100%;display:flex;flex-direction:column;background:#030a04;border:1px solid #2f9a55;box-shadow:0 0 48px rgba(74,240,122,.14);animation:decrypt .45s steps(9,end)">
+<div style="position:absolute;top:-2px;left:-2px;width:16px;height:16px;border-top:3px solid #c4ffd2;border-left:3px solid #c4ffd2"></div><div style="position:absolute;top:-2px;right:-2px;width:16px;height:16px;border-top:3px solid #c4ffd2;border-right:3px solid #c4ffd2"></div><div style="position:absolute;bottom:-2px;left:-2px;width:16px;height:16px;border-bottom:3px solid #c4ffd2;border-left:3px solid #c4ffd2"></div><div style="position:absolute;bottom:-2px;right:-2px;width:16px;height:16px;border-bottom:3px solid #c4ffd2;border-right:3px solid #c4ffd2"></div>
+<div style="flex:none;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px clamp(14px,3cqw,24px);font-family:'VT323',ui-monospace,monospace;font-size:22px;line-height:1.1;letter-spacing:.06em;text-transform:uppercase;color:#4af07a"><span>▓▓ {{ panelFile }} <span style="color:#3fb168">· {{ decryptLabel }}</span></span><button onClick="{{ close }}" style="all:unset;cursor:pointer;color:#3fb168;white-space:nowrap" style-hover="color:#e6ffec">[ESC] CLOSE</button></div>
+<div style="flex:none;height:2px;background:#14401f"><div style="height:100%;width:{{ dpPct }};background:#4af07a;box-shadow:0 0 8px #4af07a"></div></div>
+<div style="flex:1;min-height:0;overflow-y:auto;padding:24px clamp(16px,3cqw,28px) 28px;display:flex;flex-direction:column;gap:20px;text-shadow:none">
+<sc-if value="{{ showAbout }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:8px"><div style="font-family:'VT323',monospace;font-size:clamp(40px,7cqw,64px);line-height:.85;text-transform:uppercase;color:#e6ffec;text-shadow:0 0 12px rgba(74,240,122,.45)">{{ pName }}</div><div style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#4af07a">{{ pTitle }} · {{ pLocation }}</div></div>
+<p style="margin:0;max-width:64ch;font-size:15px;line-height:1.7;color:#c4ffd2;text-wrap:pretty">{{ pAbout }}</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:1px;background:#14401f;border:1px solid #14401f"><sc-for list="{{ skills }}" as="g" hint-placeholder-count="5"><div style="background:#030a04;padding:14px 16px;display:flex;flex-direction:column;gap:4px"><div style="font-family:'VT323',ui-monospace,monospace;font-size:21px;line-height:1.1;text-transform:uppercase;color:#4af07a">{{ g.h }}</div><sc-for list="{{ g.items }}" as="i" hint-placeholder-count="2"><div style="font-size:13px;line-height:1.55;color:#c4ffd2">{{ i }}</div></sc-for></div></sc-for></div>
+</sc-if>
+<sc-if value="{{ showResume }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px"><div style="font-family:'VT323',monospace;font-size:clamp(40px,7cqw,64px);line-height:.85;text-transform:uppercase;color:#e6ffec;text-shadow:0 0 12px rgba(74,240,122,.45)">Service record</div><a href="{{ resumeUrl }}" style="font-family:'VT323',ui-monospace,monospace;font-size:20px;text-transform:uppercase;text-decoration:none;color:#020703;background:#4af07a;padding:4px 12px" style-hover="background:#e6ffec;color:#020703">[ download pdf ]</a></div>
+<sc-for list="{{ experience }}" as="j" hint-placeholder-count="3"><div style="display:flex;flex-wrap:wrap;gap:6px 20px;border-top:1px solid #14401f;padding-top:14px"><div style="flex:0 0 110px;font-family:'VT323',ui-monospace,monospace;font-size:21px;line-height:1.2;color:#4af07a">{{ j.years }}</div><div style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:6px"><div style="font-size:15px;font-weight:600;color:#e6ffec">{{ j.role }} <span style="font-weight:400;color:#4af07a">— {{ j.co }}</span></div><sc-for list="{{ j.bullets }}" as="b" hint-placeholder-count="3"><div style="display:grid;grid-template-columns:16px minmax(0,1fr);font-size:13.5px;line-height:1.6;color:#c4ffd2"><span style="color:#3fb168">▸</span><span style="text-wrap:pretty">{{ b }}</span></div></sc-for></div></div></sc-for>
+</sc-if>
+<sc-if value="{{ showContact }}" hint-placeholder-val="{{ false }}">
+<div style="font-family:'VT323',monospace;font-size:clamp(40px,7cqw,64px);line-height:.85;text-transform:uppercase;color:#e6ffec;text-shadow:0 0 12px rgba(74,240,122,.45)">Open channels</div>
+<p style="margin:0;font-size:15px;color:#c4ffd2">{{ pLocation }}. Response within 24 hours.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:8px"><sc-for list="{{ contact }}" as="k" hint-placeholder-count="4"><a href="{{ k.href }}" target="_blank" rel="noopener" style="display:flex;flex-direction:column;gap:2px;padding:12px 14px;border:1px solid #1f6b3a;text-decoration:none;color:#e6ffec" style-hover="background:rgba(74,240,122,.1);border-color:#4af07a;color:#fff"><span style="font-family:'VT323',ui-monospace,monospace;font-size:20px;text-transform:uppercase;color:#4af07a">{{ k.label }}</span><span style="font-size:14px;word-break:break-all">{{ k.value }}</span></a></sc-for></div>
+</sc-if>
+<sc-if value="{{ showProjects }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px"><div style="font-family:'VT323',monospace;font-size:clamp(40px,7cqw,64px);line-height:.85;text-transform:uppercase;color:#e6ffec;text-shadow:0 0 12px rgba(74,240,122,.45)">Repositories</div><span style="font-family:'VT323',ui-monospace,monospace;font-size:19px;text-transform:uppercase;color:#3fb168">{{ repoCount }} public · live from github</span></div>
+<sc-if value="{{ reposLoading }}" hint-placeholder-val="{{ true }}"><div style="color:#3fb168">reading github.com/nxdx96 …</div></sc-if>
+<div style="display:flex;flex-direction:column"><sc-for list="{{ repos }}" as="r" hint-placeholder-count="4"><a href="{{ r.url }}" target="_blank" rel="noopener" style="display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:2px 12px;padding:12px 8px;border-top:1px solid #14401f;text-decoration:none;color:#c4ffd2" style-hover="background:rgba(74,240,122,.08);color:#c4ffd2"><span style="font-family:'VT323',ui-monospace,monospace;font-size:22px;line-height:1.1;color:#4af07a">{{ r.idx }}</span><span style="font-size:15px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:#e6ffec;word-break:break-word">{{ r.name }}</span><span style="font-size:12px;color:#3fb168">{{ r.updated }}</span><span></span><span style="grid-column:2/4;font-size:13.5px;line-height:1.55">{{ r.desc }}</span><span></span><span style="grid-column:2/4;display:flex;gap:14px;font-size:12px;color:#3fb168"><span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;background:{{ r.langColor }}"></span>{{ r.lang }}</span><span>★ {{ r.stars }}</span></span></a></sc-for></div>
+</sc-if>
+</div></div></div></sc-if><sc-if value="{{ scanlines }}" hint-placeholder-val="{{ true }}"><div aria-hidden="true" style="position:absolute;inset:0;z-index:6;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px);animation:flicker 5s infinite"></div><div aria-hidden="true" style="position:absolute;inset:0;z-index:6;pointer-events:none;overflow:hidden"><div style="position:absolute;left:0;right:0;height:140px;background:linear-gradient(180deg,transparent,rgba(74,240,122,.05),transparent);animation:roll 8s linear infinite"></div></div></sc-if>
+<div aria-hidden="true" style="position:absolute;inset:0;z-index:6;pointer-events:none;box-shadow:inset 0 0 140px 20px rgba(0,0,0,.7)"></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;field&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;random&quot;,&quot;topo&quot;,&quot;life&quot;,&quot;plasma&quot;,&quot;flow&quot;],&quot;default&quot;:&quot;random&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Background&quot;},&quot;fieldIntensity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:0.1,&quot;max&quot;:0.7,&quot;step&quot;:0.05,&quot;default&quot;:0.5,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Background&quot;},&quot;shape&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;random&quot;,&quot;arya&quot;,&quot;yuki&quot;,&quot;miso&quot;,&quot;misa&quot;,&quot;headphones&quot;,&quot;vinyl&quot;,&quot;planet&quot;,&quot;heart&quot;,&quot;buddy&quot;,&quot;globe&quot;,&quot;torus&quot;,&quot;knot&quot;,&quot;mobius&quot;,&quot;helix&quot;,&quot;allcats&quot;,&quot;license&quot;],&quot;default&quot;:&quot;random&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Orbit&quot;},&quot;scanlines&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;CRT&quot;},&quot;bootSequence&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;}}">
+class Component extends DCLogic {
+  state = { lines: [], input: "", panel: null, repos: null, reposErr: null, hist: [], hi: -1, compact: false, dp: 0, nameDp: 0, now: Date.now(), stats: null };
+  preRef = React.createRef(); hiRef = React.createRef(); wrapRef = React.createRef(); heroRef = React.createRef(); objRef = React.createRef(); t0 = Date.now();
+  static FIELDS = ["plasma", "topo", "flow", "life"];
+    newPick() {
+    const F = Component.FIELDS, r = a => a[(Math.random() * a.length) | 0];
+    let last = ""; try { last = localStorage.getItem("phosphor-orbit-last") || ""; } catch (e) {}
+    this._lastShape = (this.pick && this.pick.shape) || last.split("|")[1] || null;
+    let field, n = 0; do { field = r(F); } while (field === last.split("|")[0] && n++ < 20);
+    const shape = this.orb ? this.orb.pickShape(this._lastShape) : "_";
+    try { if (this.orb) localStorage.setItem("phosphor-orbit-last", field + "|" + shape); } catch (e) {}
+    return { field, shape };
+  }
+  pick = this.newPick();
+  fieldType() { const v = this.props.field; return v && v !== "random" ? v : this.pick.field; }
+  shapeType() { const v = this.props.shape; return v && v !== "random" ? v : this.pick.shape; }
+  shapeLabel() { const s = this.shapeType(); return s === "_" ? "scanning…" : (this.orb && this.orb.LABELS[s]) || s; }
+  autoIntensity() { return { plasma: 0.5, topo: 0.55, flow: 0.5, life: 0.35 }[this.fieldType()] || 0.45; }
+  reroll = () => { this.pick = this.newPick(); this.forceUpdate(); };
+  async componentDidMount() {
+    const u = f => new URL(f, document.baseURI).href;
+    const [m, fx, orb] = await Promise.all([import(u("terminal-core.js")), import(u("phosphor-fx.js")), import(u("orbit-shapes.js"))]);
+    this.fx = fx; this.orb = orb; this.pick.shape = orb.pickShape(this._lastShape); try { localStorage.setItem("phosphor-orbit-last", this.pick.field + "|" + this.pick.shape); } catch (e) {}
+    this.core = m.attach(this, { prompt: "C:\\PORTFOLIO>", banner: fx.BANNER, boot: this.props.bootSequence === false ? null : fx.BOOT, bootDelay: 190, delay: 16, palette: fx.PALETTE, autoHelp: this.props.autoHelp ?? false, fkeys: fx.FKEYS, helpExtra: fx.HELP_EXTRA });
+    this.core.mount();
+    const fit = () => { const w = this.wrapRef.current, h = this.heroRef.current; if (!w || !h) return; const blk = h.parentElement; let lo = 28, hi = 230;
+      for (let k = 0; k < 9; k++) { const m = (lo + hi) / 2; h.style.fontSize = m + "px"; if (blk.offsetHeight <= w.clientHeight && h.scrollWidth <= h.clientWidth + 1) lo = m; else hi = m; }
+      h.style.fontSize = Math.floor(lo) + "px"; };
+    this.fit = fit; setTimeout(fit, 0); document.fonts && document.fonts.ready.then(fit);
+    if (window.ResizeObserver) { this.fro = new ResizeObserver(() => fit()); const hook = () => this.wrapRef.current ? this.fro.observe(this.wrapRef.current) : setTimeout(hook, 50); hook(); }
+    this.field = fx.startField(this.preRef.current, { hiPre: this.hiRef.current, root: () => this.core.rootRef.current, type: this.fieldType(), intensity: (this.props.fieldIntensity ?? this.autoIntensity()), mask: null });
+    this.clock = setInterval(() => this.setState({ now: Date.now(), stats: this.field.stats() }), 1000);
+    this.glitch = setInterval(() => { if (this.state.booted && !this.state.panel) fx.ramp(this, "nameDp", 450, 0.5); }, 8000);
+  }
+  componentDidUpdate(pp) {
+    pp = pp || {};
+    this.core && this.core.afterUpdate();
+    if (!this.fx) return;
+    if (this.orb && this.objRef.current !== this._objEl) { this.obj && this.obj.stop(); this._objEl = this.objRef.current; this.obj = this._objEl ? this.orb.startOrbit(this._objEl, { shape: this.shapeType() }) : null; }
+    if (this.obj && this.shapeType() !== this._shape) { this._shape = this.shapeType(); this.obj.set({ shape: this._shape }); }
+    const p = this.state.panel;
+    if (p && p !== this._dpFor) { this._dpFor = p; this.fx.ramp(this, "dp", 650); }
+    if (!p) this._dpFor = null;
+    if (this.state.booted && !this._wasBooted) { this._wasBooted = true; this.fx.ramp(this, "nameDp", 1400); }
+    const fk = this.fieldType() + "|" + (this.props.fieldIntensity ?? this.autoIntensity());
+    if (this.field && fk !== this._fk) { this._fk = fk; this.field.set({ type: this.fieldType(), intensity: (this.props.fieldIntensity ?? this.autoIntensity()) }); }
+  }
+  componentWillUnmount() { this.obj && this.obj.stop(); this.fro && this.fro.disconnect(); this.core && this.core.unmount(); this.field && this.field.stop(); clearInterval(this.clock); clearInterval(this.glitch); this.fx && this.fx.stopRamps(this); }
+  renderVals() {
+    const s = this.state, fx = this.fx, stop = e => e.stopPropagation();
+    const base = { stop, preRef: this.preRef, hiRef: this.hiRef, wrapRef: this.wrapRef, heroRef: this.heroRef, objRef: this.objRef, shapeName: this.shapeLabel(), reroll: this.reroll, scanlines: this.props.scanlines ?? true, fieldName: String(this.fieldType()).toUpperCase() };
+    if (!this.core) return { ...base, lines: [], repos: [], skills: [], experience: [], contact: [], langs: [], wide: true, compact: false, booted: false, panelOpen: false, reposLoading: true, repoCount: 0, prompt: "C:\\PORTFOLIO>", input: "", heroA: "NADA", heroB: "IBRAHIM", time: "--:--:--", uptime: "00:00", gen: 0, pop: 0, fps: 0, fieldHint: "" };
+    const v = this.core.vals();
+    const dp = s.panel && s.panel === this._dpFor ? s.dp : 0;
+    const P = fx.decryptDeep({ pName: v.name, pTitle: v.title, pLocation: v.location, pAbout: v.about.join(" "), skills: v.skills, experience: v.experience, contact: v.contact, repos: v.repos }, dp);
+    const up = Math.floor((s.now - this.t0) / 1000);
+    return { ...v, ...base, ...P,
+      panelFile: (s.panel || "").toUpperCase() + ".SYS", decryptLabel: dp < 1 ? "decrypting " + Math.round(dp * 100) + "%" : "decrypted", dpPct: Math.round(dp * 100) + "%",
+      heroA: fx.scramble("NADA", s.nameDp), heroB: fx.scramble("IBRAHIM", s.nameDp),
+      time: new Date(s.now).toLocaleTimeString("en-US", { timeZone: "America/New_York", hour12: false }),
+      uptime: String(Math.floor(up / 60)).padStart(2, "0") + ":" + String(up % 60).padStart(2, "0"),
+      ...fx.hudStats(s.stats, v.repos) };
+  }
+}
+</script>
+</body>
+</html>
