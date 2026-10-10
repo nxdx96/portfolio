@@ -427,3 +427,72 @@ All colors MUST be HSL.
     letter-spacing: 1px;
   }
 }
+
+/* ============================================================
+   Phosphor Orbit terminal portfolio
+   ============================================================ */
+html, body, #root { height: 100%; }
+body { margin: 0; overflow: hidden; }
+
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes pulse { 50% { opacity: .25; } }
+@keyframes flicker { 0%, 100% { opacity: 1; } 8% { opacity: .8; } 10% { opacity: 1; } 55% { opacity: .92; } }
+@keyframes roll { from { transform: translateY(-100%); } to { transform: translateY(100%); } }
+@keyframes decrypt { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0); } }
+
+.phos-root ::selection { background: #4af07a; color: #020703; }
+/* The reference desktop is 2551 CSS px wide (3826 image px at DPR 1.5).
+   Size the desktop type and spacing with its viewport, without a root transform. */
+@property --phos-unit {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 1px;
+}
+.phos-root { --phos-unit: clamp(.666667px, calc(100vw / 2551), 1px); }
+/* These are rendering surfaces, not the legacy site's code blocks. */
+.phos-root pre {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  letter-spacing: normal;
+  white-space: pre;
+}
+.phos-root input { min-width: 0; min-height: 0; }
+.phos-root button:not(:disabled):hover { transform: none; filter: none; }
+.phos-root button:focus-visible { outline: 2px solid #4af07a; outline-offset: 2px; }
+@media (max-width: 719px) {
+  .phos-root { --phos-unit: 1px; }
+}
+@media (max-width: 380px) {
+  .phos-root { --phos-hud-size: 17; --phos-tag-size: 18; --phos-title-size: 16; }
+}
+@media (pointer: coarse) {
+  .phos-root .phos-fkey { min-height: 44px; }
+}
+.phos-root a { color: #c4ffd2; }
+.phos-root a:hover { color: #fff; }
+
+.phos-fkey {
+  all: unset;
+  display: flex;
+  align-items: center;
+  gap: calc(8 * var(--phos-unit));
+  min-height: calc(32 * var(--phos-unit));
+  cursor: pointer;
+  padding: 0 calc(10 * var(--phos-unit)) 0 calc(4 * var(--phos-unit));
+  color: #c4ffd2;
+}
+.phos-fkey:hover { background: rgba(74, 240, 122, .12); color: #fff; }
+
+.phos-reroll { all: unset; cursor: pointer; color: #c4ffd2; }
+.phos-reroll:hover { color: #fff; }
+
+.phos-close { all: unset; cursor: pointer; color: #3fb168; }
+.phos-close:hover { color: #e6ffec; }
+
+.phos-dl:hover { background: #e6ffec !important; color: #020703 !important; }
+
+.phos-contact:hover { background: rgba(74, 240, 122, .1); border-color: #4af07a !important; color: #fff !important; }
+
+.phos-repo:hover { background: rgba(74, 240, 122, .08); }
