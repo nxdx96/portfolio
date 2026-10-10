@@ -1,4 +1,4 @@
-# Phosphor Orbit Portfolio
+# Software Engineer Portfolio
 
 A full-viewport, dark-only terminal portfolio with a green phosphor display.
 
